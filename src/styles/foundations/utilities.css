@@ -1,0 +1,13 @@
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility min-size-* {
+  min-width: calc(var(--spacing) * --value(integer));
+  min-height: calc(var(--spacing) * --value(integer));
+}

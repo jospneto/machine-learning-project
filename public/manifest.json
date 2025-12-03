@@ -1,0 +1,27 @@
+{
+  "name": "Predição de Risco de Fogo - Mossoró/RN",
+  "short_name": "Fire Risk ML",
+  "description": "Sistema de Machine Learning para predição de risco de incêndios florestais",
+  "start_url": "/fire-risk",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#5b21b6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "apple touch icon"
+    }
+  ],
+  "categories": ["education", "utilities"],
+  "lang": "pt-BR"
+}
+

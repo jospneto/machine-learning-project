@@ -1,0 +1,93 @@
+{
+  "neural_network": {
+    "model_name": "Neural Network",
+    "train": {
+      "mse": 11.334910588738143,
+      "rmse": 3.366735895305443,
+      "mae": 2.5354101623045637,
+      "r2": 0.9215422293050987
+    },
+    "test": {
+      "mse": 70.35357491744563,
+      "rmse": 8.387703792900988,
+      "mae": 6.514158602703886,
+      "r2": 0.5257768052174228
+    }
+  },
+  "knn": {
+    "model_name": "KNN",
+    "train": {
+      "mse": 0.0,
+      "rmse": 0.0,
+      "mae": 0.0,
+      "r2": 1.0
+    },
+    "test": {
+      "mse": 72.42646432866123,
+      "rmse": 8.510373924138776,
+      "mae": 7.084892591274963,
+      "r2": 0.5118043490889157
+    }
+  },
+  "random_forest": {
+    "model_name": "Random Forest",
+    "train": {
+      "mse": 9.08849525094214,
+      "rmse": 3.014713129128896,
+      "mae": 2.4327022998147267,
+      "r2": 0.9370914246938493
+    },
+    "test": {
+      "mse": 43.03245168098731,
+      "rmse": 6.55991247510112,
+      "mae": 5.419211696915112,
+      "r2": 0.7099367482117195
+    },
+    "feature_importance": [
+      {
+        "feature": "DiaSemChuva",
+        "importance": 0.5752774758060588
+      },
+      {
+        "feature": "Precipitacao",
+        "importance": 0.23401377630282125
+      },
+      {
+        "feature": "FRP",
+        "importance": 0.08938335797206548
+      },
+      {
+        "feature": "Latitude",
+        "importance": 0.025457431678282835
+      },
+      {
+        "feature": "Longitude",
+        "importance": 0.023859343726651883
+      },
+      {
+        "feature": "Dia",
+        "importance": 0.017976807918647295
+      },
+      {
+        "feature": "Mes",
+        "importance": 0.01040686014158924
+      },
+      {
+        "feature": "Hora",
+        "importance": 0.008967565798309944
+      },
+      {
+        "feature": "DiaSemana",
+        "importance": 0.008779535657979422
+      },
+      {
+        "feature": "Municipio_encoded",
+        "importance": 0.005877844997593831
+      },
+      {
+        "feature": "Bioma_encoded",
+        "importance": 0.0
+      }
+    ]
+  }
+}

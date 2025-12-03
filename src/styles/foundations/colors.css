@@ -1,0 +1,69 @@
+@theme {
+  /* NEUTRAL COLORS */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fcfcfc;
+  --color-neutral-100: #f6f6f6;
+  --color-neutral-200: #dddddd;
+  --color-neutral-300: #c9c9c9;
+  --color-neutral-400: #949494;
+  --color-neutral-500: #666666;
+  --color-neutral-600: #444444;
+  --color-neutral-700: #000000;
+
+  /* GALAXY THEME - Deep Space */
+  --color-galaxy-900: #0a0a0f;
+  --color-galaxy-800: #0d0d14;
+  --color-galaxy-700: #12121c;
+  --color-galaxy-600: #1a1a2e;
+  --color-galaxy-500: #16213e;
+
+  /* COSMIC PURPLE */
+  --color-cosmic-900: #1e0533;
+  --color-cosmic-800: #2d0a4e;
+  --color-cosmic-700: #3d1066;
+  --color-cosmic-600: #5b21b6;
+  --color-cosmic-500: #7c3aed;
+  --color-cosmic-400: #a78bfa;
+  --color-cosmic-300: #c4b5fd;
+  --color-cosmic-200: #ddd6fe;
+  --color-cosmic-100: #ede9fe;
+
+  /* FIRE COLORS */
+  --color-fire-900: #7f1d1d;
+  --color-fire-800: #991b1b;
+  --color-fire-700: #b91c1c;
+  --color-fire-600: #dc2626;
+  --color-fire-500: #ef4444;
+  --color-fire-400: #f87171;
+  --color-fire-300: #fca5a5;
+
+  /* EMBER COLORS (Orange/Yellow) */
+  --color-ember-900: #78350f;
+  --color-ember-800: #92400e;
+  --color-ember-700: #b45309;
+  --color-ember-600: #d97706;
+  --color-ember-500: #f59e0b;
+  --color-ember-400: #fbbf24;
+  --color-ember-300: #fcd34d;
+  --color-ember-200: #fef08a;
+
+  /* STARLIGHT */
+  --color-star-white: #ffffff;
+  --color-star-blue: #93c5fd;
+  --color-star-purple: #c4b5fd;
+  --color-star-pink: #f9a8d4;
+
+  /* DECORATIVE COLORS */
+  --color-pink: #ef6497;
+  --color-lightgreen: #99cc33;
+  --color-lightpink-0: #f1eef7;
+  --color-green: #225c3d;
+  --color-lightblue: #3193f0;
+  --color-blue: #334ae2;
+  --color-blue-2: #341f97;
+  --color-red: #cc1f59;
+  --color-brown: #916666;
+  --color-orange: #ff6200;
+  --color-brightpink: #eb3d7d;
+  --color-neutralhigh: #0b2739;
+}

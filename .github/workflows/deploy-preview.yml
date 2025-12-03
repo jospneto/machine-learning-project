@@ -1,0 +1,71 @@
+name: Deploy Preview Workflow
+run-name: Deploy Preview Workflow
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  deploy-preview-workflow:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        env:
+          GITHUB_USER: ${{ secrets.LOOMI_DEV_USERNAME }}
+          GITHUB_EMAIL: ${{ secrets.LOOMI_DEV_EMAIL }}
+        run: |
+          git config --global user.name "$GITHUB_USER"
+          git config --global user.email "$GITHUB_EMAIL"
+
+      - name: Get pull request author
+        id: get_pull_request_author
+        run: |
+          LAST_COMMIT_AUTHOR="${{ github.event.pull_request.user.login }}"
+          echo "LAST_COMMIT_AUTHOR=$LAST_COMMIT_AUTHOR" >> $GITHUB_ENV
+
+      - name: Check if commit is not from LoomiDev
+        id: check_commit
+        run: |
+          if [ "$LAST_COMMIT_AUTHOR" != "${{ secrets.LOOMI_DEV_USERNAME }}" ]; then
+            echo "New commit detected from a non-loomi-dev user. Proceeding with commit."
+            echo "COMMIT_REQUIRED=true" >> $GITHUB_ENV
+          else
+            echo "Commit is from Loomi Dev. No action required."
+            echo "COMMIT_REQUIRED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Update deploy file register
+        if: env.COMMIT_REQUIRED == 'true'
+        run: |
+          timestamp=$(date +'%d-%m-%Y %H:%M:%S')
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          deploy_content="Deploy triggered at $timestamp"
+
+          readme_content=$(cat README.md)
+          last_line=$(tail -n 2 README.md)
+
+          if [[ $last_line == *"Deploy triggered at"* ]]; then
+            new_readme_content=$(echo "$readme_content" | sed '$s/.*/'"$deploy_content"'/')
+          else
+            new_readme_content=$(echo -e "$readme_content\n$deploy_content")
+          fi
+
+          echo "$new_readme_content" > README.md
+
+      - name: Commit Changes
+        run: |
+          git add .
+          git commit -m "ci: update deploy preview log"
+
+      - name: Push Changes
+        run: |
+          git push origin HEAD:${{ github.head_ref }}

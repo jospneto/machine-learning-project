@@ -1,0 +1,559 @@
+---
+apply: false
+globs:
+description: This generator creates production-ready, type-safe API modules that follow modern React Query patterns and integrate seamlessly with the existing Next.js application architecture.
+---
+
+# API Generator - Interactive API Module Creator
+
+## Purpose
+Interactive assistant for generating complete, production-ready API modules with TypeScript, React Query integration, and CRUD operations following the Next.js 15 App Router architecture.
+
+## Context Awareness
+The API Generator is **context-aware** and can work with existing modules:
+- When user types `@product @api-generator`, it will use "product" as the module name
+- When user types `@user @api-generator add DELETE`, it will add DELETE operation to existing user module
+- If no context provided, it will ask for module name
+
+## Commands
+
+### Primary Commands
+- `@api-generator` - Start interactive API module generation
+- `@api-generator add [OPERATION]` - Add operation to existing module
+- `@api-generator remove [OPERATION]` - Remove operation from existing module
+
+### Operation Types
+- `GET_ALL` - List all items (with optional pagination/filters)
+- `GET_ALL_INFINITE` - List all items with infinite scroll support
+- `GET_ID` - Get single item by ID
+- `CREATE` - Create new item
+- `UPDATE` - Update existing item
+- `DELETE` - Delete item
+
+### Context-Aware Examples
+```
+@product @api-generator
+@user @api-generator add DELETE
+@category @api-generator add GET_ALL
+@order @api-generator remove UPDATE
+```
+
+## Structured Interactive Flow
+
+### Step 1: Module Name Collection
+When user activates `@api-generator`, start with:
+
+```
+🚀 **API Generator Started!**
+
+**Step 1/4: Module Selection**
+
+Please enter the name of the module you would like to create (e.g., product, user, category, etc.):
+```
+
+### Step 2: Operation Selection
+After module name is confirmed:
+
+```
+📋 **Step 2/4: Operation Selection**
+
+Select operations for your **{module}** module:
+
+**Available Operations:**
+**A)** Complete CRUD (GET_ALL, GET_ID, CREATE, UPDATE, DELETE)
+**B)** Complete CRUD with Infinite Query (GET_ALL, GET_ALL_INFINITE, GET_ID, CREATE, UPDATE, DELETE)
+**C)** Read-only (GET_ALL, GET_ID)
+**D)** Read-only + Infinite Scroll (GET_ALL_INFINITE, GET_ID)
+**E)** Basic CRUD (GET_ALL, CREATE, UPDATE, DELETE)
+**F)** Custom selection (choose individual operations)
+
+**Choose an option (A-F):**
+```
+
+If user chooses **F) Custom selection**:
+```
+**Custom Operation Selection:**
+
+Choose which operations to include:
+**A)** GET_ALL - List all {module}s (with pagination)
+**B)** GET_ALL_INFINITE - List all {module}s (with infinite scroll)
+**C)** GET_ID - Get {module} by ID
+**D)** CREATE - Create new {module}
+**E)** UPDATE - Update existing {module}
+**F)** DELETE - Delete {module}
+
+**Select operations (e.g., "A,C,D" or "A C D"):**
+```
+
+### Step 3: Entity Configuration
+After operations are selected:
+
+```
+📝 **Step 3/4: Entity Configuration**
+
+Configure your **{Module}** entity:
+
+**A)** Basic entity (extends BaseEntity)
+**B)** Enhanced entity (basic + common fields for {module})
+**C)** Custom entity (I'll specify the fields)
+
+**Choose an option (A-C):**
+```
+
+If user chooses **B) Enhanced entity**, show relevant fields:
+```
+**Enhanced {Module} Entity includes:**
+- BaseEntity fields: id, createdAt, updatedAt
+- {module}-specific fields: {relevant_fields}
+
+**Proceed with enhanced entity? (Y/N):**
+```
+
+If user chooses **C) Custom entity**:
+```
+**Custom Entity Configuration:**
+
+Please specify the additional fields for your {Module} entity (BaseEntity fields will be included automatically):
+
+**Example format:**
+name: string, description?: string, price: number, isActive: boolean
+
+**Your fields:**
+```
+
+### Step 4: Generation Confirmation
+Final confirmation with complete summary:
+
+```
+✅ **Step 4/4: Generation Summary**
+
+**Module:** {module}
+**Operations:** {selected_operations}
+**Entity Type:** {entity_type}
+**Entity Fields:** {entity_fields}
+
+**Files to be generated:**
+- `src/api/{module}/config.ts` - Routes, query keys, mutation keys
+- `src/api/{module}/types.ts` - TypeScript definitions
+- `src/api/{module}/endpoints.ts` - API endpoint functions
+- `src/api/{module}/hooks/` - React Query hooks:
+  {list_of_hooks}
+
+**Generation Options:**
+**A)** Generate now
+**B)** Modify configuration
+**C)** Cancel generation
+
+**Choose an option (A-C):**
+```
+
+## File Templates
+
+### types.ts Template
+```typescript
+import { BaseEntity, GetManyResponse } from '@/types';
+
+export type {Module} = BaseEntity;
+
+export type Get{Module}sResponse = GetManyResponse<{Module}>;
+
+export type Get{Module}sParams = {
+  skip: number;
+  take: number;
+};
+
+export type Get{Module}ByIdParams = {
+  {module}Id: string;
+};
+
+export type Delete{Module}Params = {
+  {module}Id: string;
+};
+
+export type Get{Module}ByIdResponse = {Module};
+
+export type Create{Module}Body = Omit<{Module}, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type Create{Module}Response = {Module};
+
+export type Update{Module}Body = Partial<Omit<{Module}, 'id' | 'createdAt' | 'updatedAt'>> & {
+  {module}Id: {Module}['id'];
+};
+
+export type Update{Module}Response = {Module};
+```
+
+### config.ts Template
+```typescript
+import { defineQueryKey, defineMutationKey } from '@/lib/react-query/utils';
+import { defineRoute } from '@/utils/functions';
+
+import { Delete{Module}Params, Get{Module}ByIdParams, Get{Module}sParams, Update{Module}Body } from './types';
+
+export const {MODULE}_ENDPOINTS = {
+  get{Module}s: defineRoute(() => '/{modules}'),
+  get{Module}ById: defineRoute<Get{Module}ByIdParams>(({ {module}Id }) => `/{modules}/${{module}Id}`),
+  create{Module}: defineRoute(() => '/{modules}'),
+  update{Module}: defineRoute<Pick<Update{Module}Body, '{module}Id'>>(({ {module}Id }) => `/{modules}/${{module}Id}`),
+  delete{Module}: defineRoute<Pick<Delete{Module}Params, '{module}Id'>>(({ {module}Id }) => `/{modules}/${{module}Id}`),
+} as const;
+
+export const {MODULE}_QUERY_KEYS = {
+  get{Module}s: defineQueryKey('{modules}'),
+  get{Module}ById: defineQueryKey<Get{Module}ByIdParams>('{module}-by-id'),
+  getInfinite{Module}s: defineQueryKey<Omit<Get{Module}sParams, 'skip'>>('infinite-{modules}'),
+} as const;
+
+export const {MODULE}_MUTATION_KEYS = {
+  create{Module}: defineMutationKey('create-{module}'),
+  update{Module}: defineMutationKey('update-{module}'),
+  delete{Module}: defineMutationKey('delete-{module}'),
+} as const;
+```
+
+### endpoints.ts Template
+```typescript
+import httpClient from '@/lib/httpClient';
+import { defineEndpoint } from '@/utils/functions';
+
+import { {MODULE}_ENDPOINTS } from './config';
+import {
+  Create{Module}Body,
+  Create{Module}Response,
+  Delete{Module}Params,
+  Get{Module}ByIdParams,
+  Get{Module}ByIdResponse,
+  Get{Module}sParams,
+  Get{Module}sResponse,
+  Update{Module}Body,
+  Update{Module}Response,
+} from './types';
+
+export const get{Module}s = defineEndpoint<Get{Module}sResponse, Get{Module}sParams>(async (searchParams) => {
+  const response = await httpClient.authorized().get({MODULE}_ENDPOINTS.get{Module}s(), { searchParams });
+  const data = await response.json<Get{Module}sResponse>();
+  return data;
+});
+
+export const get{Module}ById = defineEndpoint<Get{Module}ByIdResponse, Get{Module}ByIdParams>(
+  async ({ {module}Id }) => {
+    const response = await httpClient.authorized().get({MODULE}_ENDPOINTS.get{Module}ById({ {module}Id }));
+    const data = await response.json<Get{Module}ByIdResponse>();
+    return data;
+  },
+);
+
+export const create{Module} = defineEndpoint<Create{Module}Response, Create{Module}Body>(async ({module}) => {
+  const response = await httpClient.authorized().post({MODULE}_ENDPOINTS.create{Module}(), {
+    json: {module},
+  });
+  const data = await response.json<Create{Module}Response>();
+  return data;
+});
+
+export const update{Module} = defineEndpoint<Update{Module}Response, Update{Module}Body>(
+  async ({ {module}Id, ...{module} }) => {
+    const response = await httpClient.authorized().put({MODULE}_ENDPOINTS.update{Module}({ {module}Id }), {
+      json: {module},
+    });
+    const data = await response.json<Update{Module}Response>();
+    return data;
+  },
+);
+
+export const delete{Module} = defineEndpoint<void, Delete{Module}Params>(async ({ {module}Id }) => {
+  await httpClient.authorized().delete({MODULE}_ENDPOINTS.delete{Module}({ {module}Id }));
+});
+```
+
+### hooks Template
+```typescript
+// useGet{Module}s.tsx
+import { useQuery } from '@tanstack/react-query';
+
+import { defineQuery } from '@/lib/react-query';
+
+import { {MODULE}_QUERY_KEYS } from '../config';
+import { get{Module}s } from '../endpoints';
+import { Get{Module}sParams, Get{Module}sResponse } from '../types';
+
+export const useGet{Module}s = defineQuery<Get{Module}sResponse, Get{Module}sParams>(
+  ({ options, params }) =>
+    useQuery({
+      ...options,
+      queryKey: [{MODULE}_QUERY_KEYS.get{Module}s(), params],
+      queryFn: () => get{Module}s(params),
+    }),
+);
+
+// useGetInfinite{Module}s.tsx
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { defineInfiniteQuery } from '@/lib/react-query';
+
+import { {MODULE}_QUERY_KEYS } from '../config';
+import { get{Module}s } from '../endpoints';
+import { Get{Module}sParams, Get{Module}sResponse } from '../types';
+
+export const useGetInfinite{Module}s = defineInfiniteQuery<
+  Get{Module}sResponse,
+  Omit<Get{Module}sParams, 'skip'>
+>(({ options, params }) =>
+  useInfiniteQuery({
+    ...options,
+     queryKey: {MODULE}_QUERY_KEYS.getInfinite{Module}s(params),
+    queryFn: ({ pageParam = 1 }) =>
+      get{Module}s({
+        ...params,
+        skip: pageParam,
+        take: params.take ?? 10,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      const fetchedCount = allPages.reduce((acc, page) => acc + page.data.length, 0);
+      const total = lastPage.total_items;
+
+      return fetchedCount < total ? fetchedCount : undefined;
+    },
+  }),
+);
+
+// useGet{Module}ById.tsx
+import { useQuery } from '@tanstack/react-query';
+
+import { defineQuery } from '@/lib/react-query';
+
+import { {MODULE}_QUERY_KEYS } from '../config';
+import { get{Module}ById } from '../endpoints';
+import { Get{Module}ByIdResponse, Get{Module}ByIdParams } from '../types';
+
+export const useGet{Module}ById = defineQuery<Get{Module}ByIdResponse, Get{Module}ByIdParams>(
+  ({ options, params }) =>
+    useQuery({
+      ...options,
+      queryKey: {MODULE}_QUERY_KEYS.get{Module}ById(params),
+      queryFn: () => get{Module}ById(params),
+    }),
+);
+
+// useDelete{Module}.tsx
+import { useMutation } from '@tanstack/react-query';
+
+import { defineMutation } from '@/lib/react-query';
+
+import { {MODULE}_MUTATION_KEYS } from '../config';
+import { delete{Module} } from '../endpoints';
+import { Delete{Module}Params } from '../types';
+
+export const useDelete{Module} = defineMutation<void, Delete{Module}Params>(({ options }) => {
+  return useMutation({
+    ...options,
+    mutationKey: {MODULE}_MUTATION_KEYS.delete{Module}(),
+    mutationFn: ({ {module}Id }) => delete{Module}({ {module}Id }),
+  });
+});
+
+// useCreate{Module}.tsx
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { defineMutation } from '@/lib/react-query';
+
+import { {MODULE}_MUTATION_KEYS, {MODULE}_QUERY_KEYS } from '../config';
+import { create{Module} } from '../endpoints';
+import { Create{Module}Body, Create{Module}Response, Get{Module}ByIdResponse } from '../types';
+
+export const useCreate{Module} = defineMutation<Create{Module}Response, Create{Module}Body>(({ options }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...options,
+    mutationKey: {MODULE}_MUTATION_KEYS.create{Module}(),
+    mutationFn: ({module}) => create{Module}({module}),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({
+        queryKey: {MODULE}_QUERY_KEYS.get{Module}s({ exact: false }),
+      });
+
+      queryClient.setQueryData<Get{Module}ByIdResponse>(
+        {MODULE}_QUERY_KEYS.get{Module}ById({ {module}Id: response.id }),
+        () => response,
+      );
+    },
+  });
+});
+
+// useUpdate{Module}.tsx
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { defineMutation } from '@/lib/react-query';
+
+import { {MODULE}_MUTATION_KEYS, {MODULE}_QUERY_KEYS } from '../config';
+import { update{Module} } from '../endpoints';
+import {
+  Get{Module}ByIdResponse,
+  Update{Module}Body,
+  Update{Module}Response,
+} from '../types';
+
+export const useUpdate{Module} = defineMutation<Update{Module}Response, Update{Module}Body>(({ options }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    ...options,
+    mutationKey: {MODULE}_MUTATION_KEYS.update{Module}(),
+    mutationFn: ({ {module}Id, ...{module} }) => update{Module}({ {module}Id, ...{module} }),
+    onSuccess: (response, { {module}Id }) => {
+      queryClient.invalidateQueries({
+        queryKey: {MODULE}_QUERY_KEYS.get{Module}s({ exact: false }),
+      });
+
+      queryClient.setQueryData<Get{Module}ByIdResponse>(
+        {MODULE}_QUERY_KEYS.get{Module}ById({ {module}Id }),
+        (old{Module}) => ({
+          ...(old{Module} ?? {}),
+          ...response,
+        }),
+      );
+    },
+  });
+});
+```
+
+## Variable Replacements
+
+When generating, replace these placeholders:
+- `{module}` → module name (singular, lowercase) - e.g., "product"
+- `{Module}` → module name (singular, PascalCase) - e.g., "Product"
+- `{modules}` → module name (plural, lowercase) - e.g., "products"
+- `{Modules}` → module name (plural, PascalCase) - e.g., "Products"
+- `{MODULE}` → module name (singular, UPPERCASE) - e.g., "PRODUCT"
+
+## Enhanced Entity Field Suggestions
+
+### Product Module
+```typescript
+name?: string;
+description?: string;
+price?: number;
+category?: string;
+sku?: string;
+inStock?: boolean;
+```
+
+### User Module
+```typescript
+email?: string;
+firstName?: string;
+lastName?: string;
+role?: 'admin' | 'user' | 'moderator';
+isActive?: boolean;
+```
+
+### Category Module
+```typescript
+name?: string;
+description?: string;
+parentId?: string;
+order?: number;
+isActive?: boolean;
+```
+
+### Order Module
+```typescript
+userId?: string;
+status?: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+total?: number;
+currency?: string;
+items?: OrderItem[];
+```
+
+## Real-World Example (Product Module)
+
+### Generated Structure
+```
+src/api/product/
+├── config.ts           # PRODUCT_ENDPOINTS, PRODUCT_QUERY_KEYS, PRODUCT_MUTATION_KEYS
+├── types.ts            # Product, GetProductsResponse, CreateProductBody, etc.
+├── endpoints.ts        # getProducts, getProductById, createProduct, etc.
+└── hooks/
+    ├── useGetProducts.tsx
+    ├── useGetProductById.tsx
+    ├── useGetProductsInfinite.tsx
+    ├── useCreateProduct.tsx
+    ├── useUpdateProduct.tsx
+    └── useDeleteProduct.tsx
+```
+
+### Usage in Components
+```typescript
+import { useGetProducts, useCreateProduct } from '@/api/product/hooks';
+
+function ProductList() {
+  const { data: products, isLoading } = useGetProducts();
+  const createProduct = useCreateProduct();
+
+  const handleCreate = (product) => {
+    createProduct.mutate(product);
+  };
+
+  // Component implementation...
+}
+```
+
+## Error Handling
+
+The generator includes robust error handling:
+- TypeScript strict typing
+- Runtime validation
+- React Query error boundaries
+- HTTP client error handling
+- Optimistic updates with rollback
+
+## Best Practices Included
+
+- ✅ TypeScript strict mode compatibility
+- ✅ React Query v5 patterns
+- ✅ Optimistic updates
+- ✅ Cache invalidation strategies
+- ✅ Consistent naming conventions
+- ✅ Modular file organization
+- ✅ Reusable type definitions
+- ✅ Error boundary integration
+- ✅ Loading state management
+- ✅ Infinite scroll support (with known limitations)
+
+## Add/Remove Operations
+
+### Adding Operations
+```
+@api-generator add DELETE
+@product @api-generator add GET_INFINITE
+```
+
+The generator will:
+1. Add new types to `types.ts`
+2. Add new endpoints to `endpoints.ts`
+3. Add new keys to `config.ts`
+4. Create new hook files
+5. Update existing hooks for cache invalidation
+
+### Removing Operations
+```
+@api-generator remove UPDATE
+@user @api-generator remove GET_INFINITE
+```
+
+The generator will:
+1. Remove types from `types.ts`
+2. Remove endpoints from `endpoints.ts`
+3. Remove keys from `config.ts`
+4. Delete hook files
+5. Clean up references
+
+## Integration Points
+
+- Works with existing `@/lib/httpClient`
+- Uses `@/lib/react-query` utilities
+- Follows `@/utils/functions` patterns
+- Compatible with Next.js 15 App Router
+- Integrates with TypeScript strict mode
+- Supports existing auth middleware

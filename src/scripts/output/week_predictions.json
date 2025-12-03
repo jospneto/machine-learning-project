@@ -1,0 +1,65 @@
+[
+  {
+    "date": "2025-12-03",
+    "day_name": "Wednesday",
+    "predictions": {
+      "neural_network": 74.60700219747784,
+      "knn": 48.712387641136054,
+      "random_forest": 42.507821297078905
+    }
+  },
+  {
+    "date": "2025-12-04",
+    "day_name": "Thursday",
+    "predictions": {
+      "neural_network": 73.08481244337678,
+      "knn": 47.28570888035502,
+      "random_forest": 42.5120016854174
+    }
+  },
+  {
+    "date": "2025-12-05",
+    "day_name": "Friday",
+    "predictions": {
+      "neural_network": 71.5626226892757,
+      "knn": 47.583328242426504,
+      "random_forest": 42.50457719159698
+    }
+  },
+  {
+    "date": "2025-12-06",
+    "day_name": "Saturday",
+    "predictions": {
+      "neural_network": 70.15432596860055,
+      "knn": 47.598842914786914,
+      "random_forest": 42.52921415799567
+    }
+  },
+  {
+    "date": "2025-12-07",
+    "day_name": "Sunday",
+    "predictions": {
+      "neural_network": 69.73538780580076,
+      "knn": 49.351309390901065,
+      "random_forest": 42.62679393642565
+    }
+  },
+  {
+    "date": "2025-12-08",
+    "day_name": "Monday",
+    "predictions": {
+      "neural_network": 74.25163481284794,
+      "knn": 45.34921470435693,
+      "random_forest": 42.8912099573681
+    }
+  },
+  {
+    "date": "2025-12-09",
+    "day_name": "Tuesday",
+    "predictions": {
+      "neural_network": 72.51965843177838,
+      "knn": 45.355122676622564,
+      "random_forest": 42.87417568817616
+    }
+  }
+]
