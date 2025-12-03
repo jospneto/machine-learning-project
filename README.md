@@ -1,5 +1,3 @@
-<img src="./public/react-leap-banner.png" style="width: 100%; margin-bottom: 10px; border-radius: 10px;" />
-
 # 🔥 Sistema de Predição de Risco de Fogo - Mossoró/RN
 
 Sistema inteligente de predição de risco de incêndios florestais baseado em Machine Learning, utilizando dados do **BDQueimadas (INPE)**.
