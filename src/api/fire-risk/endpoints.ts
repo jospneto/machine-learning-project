@@ -6,6 +6,7 @@
 import type {
   ModelComparison,
   WeekPrediction,
+  YearPrediction,
   FireIncident,
   FireRiskPredictionRequest,
   FireRiskPredictionResponse,
@@ -16,6 +17,7 @@ import type {
 const ENDPOINTS = {
   metrics: '/api/fire-risk/metrics',
   weekPredictions: '/api/fire-risk/predictions/week',
+  yearPredictions: '/api/fire-risk/predictions/year',
   historicalData: '/api/fire-risk/historical',
   predict: '/api/fire-risk/predict',
   mapData: '/api/fire-risk/map-data',
@@ -63,6 +65,13 @@ export async function getModelMetrics(): Promise<ModelComparison> {
  */
 export async function getWeekPredictions(): Promise<WeekPrediction[]> {
   return fetchInternal<WeekPrediction[]>(ENDPOINTS.weekPredictions);
+}
+
+/**
+ * Busca predições mensais para o ano
+ */
+export async function getYearPredictions(): Promise<YearPrediction[]> {
+  return fetchInternal<YearPrediction[]>(ENDPOINTS.yearPredictions);
 }
 
 /**

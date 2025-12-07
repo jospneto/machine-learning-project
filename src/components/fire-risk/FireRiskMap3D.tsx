@@ -168,17 +168,19 @@ function Scene({
       {/* Terreno */}
       <TerrainGrid />
 
-      {/* Pontos de risco */}
-      {mapData.map((point) => (
-        <RiskPoint
-          key={point.id}
-          point={point}
-          centerLat={center.lat}
-          centerLng={center.lng}
-          onClick={() => onPointClick(point)}
-          isSelected={selectedPoint?.id === point.id}
-        />
-      ))}
+      {/* Pontos de risco - filtrar apenas com dados válidos */}
+      {mapData
+        .filter((point) => point.riskLevel > 0)
+        .map((point) => (
+          <RiskPoint
+            key={point.id}
+            point={point}
+            centerLat={center.lat}
+            centerLng={center.lng}
+            onClick={() => onPointClick(point)}
+            isSelected={selectedPoint?.id === point.id}
+          />
+        ))}
 
       {/* Controles de órbita */}
       <OrbitControls

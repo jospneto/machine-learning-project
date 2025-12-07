@@ -7,12 +7,15 @@ import {
   FeatureImportanceChart,
   FireRiskMap3D,
   FireRiskMapLeaflet,
+  InsightsSection,
   MetricsComparisonChart,
   ModelComparisonChart,
   ModelMetricsCards,
   ModelRadarChart,
   PredictionForm,
   StarryBackground,
+  WeekPredictionsCards,
+  YearPredictionsChart,
 } from '@/components/fire-risk';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -86,6 +89,18 @@ export default function FireRiskDashboard() {
             </div>
           </div>
         </motion.header>
+
+        {/* Previsão Semanal - Cards */}
+        <motion.section
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="space-y-6"
+        >
+          <motion.div variants={fadeInUp}>
+            <WeekPredictionsCards />
+          </motion.div>
+        </motion.section>
 
         {/* Métricas dos Modelos - Cards */}
         <motion.section
@@ -164,7 +179,28 @@ export default function FireRiskDashboard() {
           </motion.div>
         </motion.section>
 
-        {/* Predição + Gráfico de Predições */}
+        {/* Predições Anuais */}
+        <motion.section
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-100px' }}
+          variants={staggerContainer}
+          className="space-y-6"
+        >
+          <motion.div variants={fadeInUp}>
+            <h2 className="mb-1 flex items-center gap-2 text-2xl font-semibold text-white">
+              <span className="text-fire-400">📅</span> Análise Anual de Risco
+            </h2>
+            <p className="text-neutral-400">
+              Predições mensais baseadas nos dados históricos do BDQueimadas
+            </p>
+          </motion.div>
+          <motion.div variants={fadeInUp}>
+            <YearPredictionsChart className="h-[550px]" />
+          </motion.div>
+        </motion.section>
+
+        {/* Predição + Gráfico de Predições Semanais */}
         <motion.section
           initial="hidden"
           whileInView="visible"
@@ -235,63 +271,7 @@ export default function FireRiskDashboard() {
           viewport={{ once: true, margin: '-100px' }}
           variants={fadeInUp}
         >
-          <Card className="overflow-hidden border-cosmic-600/30 bg-gradient-to-br from-galaxy-800/80 to-cosmic-900/50 backdrop-blur-xl">
-            <div className="p-8">
-              <h2 className="mb-6 flex items-center gap-2 text-2xl font-semibold text-white">
-                <span className="text-amber-400">💡</span> Insights e Conclusões
-              </h2>
-
-              <div className="grid gap-8 md:grid-cols-3">
-                <div className="group space-y-3 rounded-xl border border-blue-500/20 bg-blue-500/5 p-5 transition-all hover:border-blue-500/40 hover:bg-blue-500/10">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">🧠</span>
-                    <h3 className="font-semibold text-white">Neural Network</h3>
-                  </div>
-                  <p className="text-sm leading-relaxed text-neutral-400">
-                    R² de <strong className="text-blue-400">52.6%</strong> no teste. Captura padrões
-                    não-lineares nos dados, mas apresenta maior variância nas predições.
-                  </p>
-                </div>
-
-                <div className="group space-y-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-5 transition-all hover:border-emerald-500/40 hover:bg-emerald-500/10">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">🎯</span>
-                    <h3 className="font-semibold text-white">KNN</h3>
-                  </div>
-                  <p className="text-sm leading-relaxed text-neutral-400">
-                    R² de <strong className="text-emerald-400">51.2%</strong> no teste. Apresenta
-                    overfitting significativo (R²=100% treino), indicando memorização dos dados.
-                  </p>
-                </div>
-
-                <div className="group space-y-3 rounded-xl border border-amber-500/20 bg-amber-500/5 p-5 transition-all hover:border-amber-500/40 hover:bg-amber-500/10">
-                  <div className="flex items-center gap-3">
-                    <span className="text-3xl">🌲</span>
-                    <h3 className="font-semibold text-white">Random Forest</h3>
-                  </div>
-                  <p className="text-sm leading-relaxed text-neutral-400">
-                    <strong className="text-amber-400">Melhor modelo</strong> com R² de{' '}
-                    <strong className="text-amber-400">71.0%</strong>. Identifica &quot;Dias sem
-                    Chuva&quot; como feature principal (57.5%).
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-8 rounded-xl border border-cosmic-500/30 bg-gradient-to-r from-cosmic-600/10 to-fire-600/10 p-6">
-                <h3 className="mb-3 flex items-center gap-2 font-semibold text-white">
-                  <span className="text-xl">🏆</span> Recomendação Final
-                </h3>
-                <p className="leading-relaxed text-neutral-300">
-                  O <strong className="text-amber-400">Random Forest</strong> é o modelo recomendado
-                  para produção, oferecendo o melhor equilíbrio entre acurácia e interpretabilidade.
-                  A análise de feature importance confirma que{' '}
-                  <strong className="text-fire-400">condições climáticas</strong> (dias sem chuva e
-                  precipitação) são os principais indicadores de risco de incêndio na região de
-                  Mossoró/RN.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <InsightsSection />
         </motion.section>
 
         {/* Footer Info */}
@@ -356,8 +336,7 @@ export default function FireRiskDashboard() {
                     <li className="flex items-start gap-2">
                       <span className="text-ember-400">•</span>
                       <span>
-                        <strong className="text-neutral-300">Período:</strong> Dados históricos de
-                        2020 a 2024
+                        <strong className="text-neutral-300">Período:</strong> Dados de 2025
                       </span>
                     </li>
                   </ul>
@@ -367,6 +346,18 @@ export default function FireRiskDashboard() {
               <div className="mt-6 border-t border-cosmic-600/20 pt-6 text-center text-sm text-neutral-500">
                 Sistema desenvolvido para análise preditiva de risco de incêndios florestais •{' '}
                 <span className="text-cosmic-400">Mossoró/RN</span>
+                {' - '}
+                <span>
+                  BY:{' '}
+                  <a
+                    className="text-neutral-400 hover:text-white"
+                    href="https://github.com/jospneto"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    José Neto
+                  </a>
+                </span>
               </div>
             </div>
           </Card>

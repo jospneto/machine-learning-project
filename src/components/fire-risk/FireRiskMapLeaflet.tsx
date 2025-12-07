@@ -81,73 +81,77 @@ export function FireRiskMapLeaflet({ className, onPointClick }: FireRiskMapLeafl
               url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             />
 
-            {/* Risk markers */}
-            {mapData?.map((point) => {
-              const color = getRiskColor(point.riskLevel);
-              const label = getRiskLabel(point.riskLevel);
+            {/* Risk markers - filtrar apenas pontos com dados válidos (risco > 0) */}
+            {mapData
+              ?.filter((point) => point.riskLevel > 0)
+              .map((point) => {
+                const color = getRiskColor(point.riskLevel);
+                const label = getRiskLabel(point.riskLevel);
 
-              return (
-                <CircleMarker
-                  key={point.id}
-                  center={[point.latitude, point.longitude]}
-                  radius={12}
-                  pathOptions={{
-                    fillColor: color,
-                    fillOpacity: 0.8,
-                    color: '#fff',
-                    weight: 2,
-                  }}
-                  eventHandlers={{
-                    click: () => onPointClick?.(point),
-                  }}
-                >
-                  <Tooltip direction="top" offset={[0, -10]} opacity={0.95}>
-                    <div className="text-sm">
-                      <strong>{point.municipio}</strong>
-                      <br />
-                      Risco: {label} ({point.riskLevel.toFixed(1)}%)
-                    </div>
-                  </Tooltip>
-                  <Popup>
-                    <div className="min-w-[200px] p-2">
-                      <h4 className="mb-2 font-semibold">{point.municipio}</h4>
-                      <div
-                        className="mb-3 inline-block rounded px-2 py-1 text-sm font-medium text-white"
-                        style={{ backgroundColor: color }}
-                      >
-                        {label}: {point.riskLevel.toFixed(1)}%
+                return (
+                  <CircleMarker
+                    key={point.id}
+                    center={[point.latitude, point.longitude]}
+                    radius={12}
+                    pathOptions={{
+                      fillColor: color,
+                      fillOpacity: 0.8,
+                      color: '#fff',
+                      weight: 2,
+                    }}
+                    eventHandlers={{
+                      click: () => onPointClick?.(point),
+                    }}
+                  >
+                    <Tooltip direction="top" offset={[0, -10]} opacity={0.95}>
+                      <div className="text-sm">
+                        <strong>{point.municipio}</strong>
+                        <br />
+                        Risco: {label} ({point?.riskLevel?.toFixed(1)}%)
                       </div>
-
-                      {point.predictions && (
-                        <div className="space-y-1 text-xs">
-                          <div className="font-semibold">Predições dos Modelos:</div>
-                          <div className="flex justify-between">
-                            <span>🧠 Neural Network:</span>
-                            <span className="font-medium">
-                              {point.predictions.neural_network.toFixed(1)}%
-                            </span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>🎯 KNN:</span>
-                            <span className="font-medium">{point.predictions.knn.toFixed(1)}%</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>🌲 Random Forest:</span>
-                            <span className="font-medium">
-                              {point.predictions.random_forest.toFixed(1)}%
-                            </span>
-                          </div>
+                    </Tooltip>
+                    <Popup>
+                      <div className="min-w-[200px] p-2">
+                        <h4 className="mb-2 font-semibold">{point.municipio}</h4>
+                        <div
+                          className="mb-3 inline-block rounded px-2 py-1 text-sm font-medium text-white"
+                          style={{ backgroundColor: color }}
+                        >
+                          {label}: {point?.riskLevel?.toFixed(1)}%
                         </div>
-                      )}
 
-                      <div className="mt-2 text-xs text-gray-500">
-                        📍 {point.latitude.toFixed(4)}, {point.longitude.toFixed(4)}
+                        {point.predictions && (
+                          <div className="space-y-1 text-xs">
+                            <div className="font-semibold">Predições dos Modelos:</div>
+                            <div className="flex justify-between">
+                              <span>🧠 Neural Network:</span>
+                              <span className="font-medium">
+                                {point?.predictions?.neural_network?.toFixed(1)}%
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>🎯 KNN:</span>
+                              <span className="font-medium">
+                                {point?.predictions?.knn?.toFixed(1)}%
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>🌲 Random Forest:</span>
+                              <span className="font-medium">
+                                {point?.predictions?.random_forest?.toFixed(1)}%
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="mt-2 text-xs text-gray-500">
+                          📍 {point?.latitude?.toFixed(4)}, {point?.longitude?.toFixed(4)}
+                        </div>
                       </div>
-                    </div>
-                  </Popup>
-                </CircleMarker>
-              );
-            })}
+                    </Popup>
+                  </CircleMarker>
+                );
+              })}
           </MapContainer>
 
           {/* Legend */}
@@ -182,8 +186,10 @@ export function FireRiskMapLeaflet({ className, onPointClick }: FireRiskMapLeafl
             className="absolute top-4 left-4 z-[1000] rounded-lg border border-cosmic-600/30 bg-galaxy-800/95 px-4 py-2 backdrop-blur-xl"
           >
             <p className="text-sm text-white">
-              <span className="font-semibold">{mapData?.length || 0}</span>
-              <span className="text-neutral-400"> pontos de monitoramento</span>
+              <span className="font-semibold">
+                {mapData?.filter((p) => p.riskLevel > 0).length || 0}
+              </span>
+              <span className="text-neutral-400"> municípios com dados de risco</span>
             </p>
           </motion.div>
         </div>

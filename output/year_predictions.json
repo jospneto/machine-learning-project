@@ -1,0 +1,266 @@
+[
+  {
+    "month": 1,
+    "month_name": "Janeiro",
+    "year": 2025,
+    "date": "2025-01-15",
+    "features_used": {
+      "DiaSemChuva": 2.0,
+      "Precipitacao": 0.0,
+      "FRP": 6.1
+    },
+    "historical_data": {
+      "registros_historicos": 685,
+      "risco_medio_historico": 0.7536
+    },
+    "predictions": {
+      "neural_network": 0.6047,
+      "knn": 0.3204,
+      "random_forest": 0.6962
+    },
+    "average_prediction": 0.5404,
+    "risk_level": "MODERADO"
+  },
+  {
+    "month": 2,
+    "month_name": "Fevereiro",
+    "year": 2025,
+    "date": "2025-02-15",
+    "features_used": {
+      "DiaSemChuva": 2.0,
+      "Precipitacao": 0.0,
+      "FRP": 4.8
+    },
+    "historical_data": {
+      "registros_historicos": 347,
+      "risco_medio_historico": 0.5765
+    },
+    "predictions": {
+      "neural_network": 0.5552,
+      "knn": 0.5071,
+      "random_forest": 0.6072
+    },
+    "average_prediction": 0.5565,
+    "risk_level": "MODERADO"
+  },
+  {
+    "month": 3,
+    "month_name": "Março",
+    "year": 2025,
+    "date": "2025-03-15",
+    "features_used": {
+      "DiaSemChuva": 4.0,
+      "Precipitacao": 0.0,
+      "FRP": 4.6
+    },
+    "historical_data": {
+      "registros_historicos": 330,
+      "risco_medio_historico": 0.319
+    },
+    "predictions": {
+      "neural_network": 0.7218,
+      "knn": 0.5629,
+      "random_forest": 0.5114
+    },
+    "average_prediction": 0.5987,
+    "risk_level": "MODERADO"
+  },
+  {
+    "month": 4,
+    "month_name": "Abril",
+    "year": 2025,
+    "date": "2025-04-15",
+    "features_used": {
+      "DiaSemChuva": 3.0,
+      "Precipitacao": 0.0,
+      "FRP": 3.8
+    },
+    "historical_data": {
+      "registros_historicos": 264,
+      "risco_medio_historico": 0.5606
+    },
+    "predictions": {
+      "neural_network": 0.6328,
+      "knn": 0.6503,
+      "random_forest": 0.5528
+    },
+    "average_prediction": 0.612,
+    "risk_level": "ALTO"
+  },
+  {
+    "month": 5,
+    "month_name": "Maio",
+    "year": 2025,
+    "date": "2025-05-15",
+    "features_used": {
+      "DiaSemChuva": 6.0,
+      "Precipitacao": 0.0,
+      "FRP": 4.1
+    },
+    "historical_data": {
+      "registros_historicos": 188,
+      "risco_medio_historico": 0.7991
+    },
+    "predictions": {
+      "neural_network": 0.9402,
+      "knn": 0.6854,
+      "random_forest": 0.7156
+    },
+    "average_prediction": 0.7804,
+    "risk_level": "ALTO"
+  },
+  {
+    "month": 6,
+    "month_name": "Junho",
+    "year": 2025,
+    "date": "2025-06-15",
+    "features_used": {
+      "DiaSemChuva": 10.5,
+      "Precipitacao": 0.0,
+      "FRP": 3.95
+    },
+    "historical_data": {
+      "registros_historicos": 192,
+      "risco_medio_historico": 0.9206
+    },
+    "predictions": {
+      "neural_network": 1,
+      "knn": 0.9448,
+      "random_forest": 0.9981
+    },
+    "average_prediction": 0.981,
+    "risk_level": "CRÍTICO"
+  },
+  {
+    "month": 7,
+    "month_name": "Julho",
+    "year": 2025,
+    "date": "2025-07-15",
+    "features_used": {
+      "DiaSemChuva": 9.0,
+      "Precipitacao": 0.0,
+      "FRP": 4.5
+    },
+    "historical_data": {
+      "registros_historicos": 314,
+      "risco_medio_historico": 0.9758
+    },
+    "predictions": {
+      "neural_network": 1,
+      "knn": 1,
+      "random_forest": 1.0
+    },
+    "average_prediction": 1.0,
+    "risk_level": "CRÍTICO"
+  },
+  {
+    "month": 8,
+    "month_name": "Agosto",
+    "year": 2025,
+    "date": "2025-08-15",
+    "features_used": {
+      "DiaSemChuva": 12.0,
+      "Precipitacao": 0.0,
+      "FRP": 5.2
+    },
+    "historical_data": {
+      "registros_historicos": 625,
+      "risco_medio_historico": 0.9794
+    },
+    "predictions": {
+      "neural_network": 1,
+      "knn": 1,
+      "random_forest": 1
+    },
+    "average_prediction": 1.0,
+    "risk_level": "CRÍTICO"
+  },
+  {
+    "month": 9,
+    "month_name": "Setembro",
+    "year": 2025,
+    "date": "2025-09-15",
+    "features_used": {
+      "DiaSemChuva": 36.0,
+      "Precipitacao": 0.0,
+      "FRP": 5.9
+    },
+    "historical_data": {
+      "registros_historicos": 907,
+      "risco_medio_historico": 0.989
+    },
+    "predictions": {
+      "neural_network": 1,
+      "knn": 1,
+      "random_forest": 1
+    },
+    "average_prediction": 1.0,
+    "risk_level": "CRÍTICO"
+  },
+  {
+    "month": 10,
+    "month_name": "Outubro",
+    "year": 2025,
+    "date": "2025-10-15",
+    "features_used": {
+      "DiaSemChuva": 53.0,
+      "Precipitacao": 0.0,
+      "FRP": 7.3
+    },
+    "historical_data": {
+      "registros_historicos": 1681,
+      "risco_medio_historico": 0.9968
+    },
+    "predictions": {
+      "neural_network": 0.9989,
+      "knn": 1,
+      "random_forest": 1
+    },
+    "average_prediction": 0.9996,
+    "risk_level": "CRÍTICO"
+  },
+  {
+    "month": 11,
+    "month_name": "Novembro",
+    "year": 2025,
+    "date": "2025-11-15",
+    "features_used": {
+      "DiaSemChuva": 78.0,
+      "Precipitacao": 0.0,
+      "FRP": 7.0
+    },
+    "historical_data": {
+      "registros_historicos": 1563,
+      "risco_medio_historico": 0.9991
+    },
+    "predictions": {
+      "neural_network": 0.9979,
+      "knn": 1,
+      "random_forest": 1
+    },
+    "average_prediction": 0.9993,
+    "risk_level": "CRÍTICO"
+  },
+  {
+    "month": 12,
+    "month_name": "Dezembro",
+    "year": 2025,
+    "date": "2025-12-15",
+    "features_used": {
+      "DiaSemChuva": 79.5,
+      "Precipitacao": 0.0,
+      "FRP": 2.5
+    },
+    "historical_data": {
+      "registros_historicos": 4,
+      "risco_medio_historico": 1.0
+    },
+    "predictions": {
+      "neural_network": 0.9796,
+      "knn": 1,
+      "random_forest": 1
+    },
+    "average_prediction": 0.9932,
+    "risk_level": "CRÍTICO"
+  }
+]

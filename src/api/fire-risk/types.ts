@@ -31,11 +31,42 @@ export interface ModelComparison {
 export interface WeekPrediction {
   date: string;
   day_name: string;
+  day_of_week: number;
+  features_used: {
+    DiaSemChuva: number;
+    Precipitacao: number;
+    FRP: number;
+  };
   predictions: {
     neural_network: number;
     knn: number;
     random_forest: number;
   };
+  average_prediction: number;
+  risk_level: 'CRÍTICO' | 'ALTO' | 'MODERADO' | 'BAIXO' | 'MÍNIMO';
+}
+
+export interface YearPrediction {
+  month: number;
+  month_name: string;
+  year: number;
+  date: string;
+  features_used: {
+    DiaSemChuva: number;
+    Precipitacao: number;
+    FRP: number;
+  };
+  historical_data: {
+    registros_historicos: number;
+    risco_medio_historico: number;
+  };
+  predictions: {
+    neural_network: number;
+    knn: number;
+    random_forest: number;
+  };
+  average_prediction: number;
+  risk_level: 'CRÍTICO' | 'ALTO' | 'MODERADO' | 'BAIXO' | 'MÍNIMO';
 }
 
 export interface FireIncident {

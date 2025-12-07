@@ -10,8 +10,13 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // Caminho para o arquivo de métricas gerado pelo script Python
-    const metricsPath = path.join(process.cwd(), 'output', 'model_metrics.json');
+    // Tentar primeiro no diretório src/scripts/output (onde o Python salva)
+    let metricsPath = path.join(process.cwd(), 'src', 'scripts', 'output', 'model_metrics.json');
+
+    // Se não existir, tentar no diretório output na raiz
+    if (!fs.existsSync(metricsPath)) {
+      metricsPath = path.join(process.cwd(), 'output', 'model_metrics.json');
+    }
 
     // Verificar se o arquivo existe
     if (!fs.existsSync(metricsPath)) {
