@@ -1,7 +1,10 @@
 import { z, ZodIssue } from 'zod';
 
 export const envSchema = z.object({
-  NEXT_PUBLIC_MAPBOX_TOKEN: z.string(),
+  NEXT_PUBLIC_API_URL: z.string(),
+  NEXT_PUBLIC_ENVIRONMENT: z.string(),
+  AUTH_SECRET: z.string(),
+  AUTH_TRUST_HOST: z.string(),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;
