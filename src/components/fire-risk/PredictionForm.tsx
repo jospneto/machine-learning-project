@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 import { usePredictLocation } from '@/api/fire-risk/hooks';
 import type { FireRiskPredictionRequest } from '@/api/fire-risk/types';
@@ -15,10 +15,26 @@ interface PredictionFormProps {
 }
 
 const RISK_COLORS = {
-  low: { bg: 'from-emerald-500/20 to-emerald-600/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
-  medium: { bg: 'from-amber-500/20 to-amber-600/20', border: 'border-amber-500/50', text: 'text-amber-400' },
-  high: { bg: 'from-orange-500/20 to-red-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
-  critical: { bg: 'from-red-600/20 to-red-900/20', border: 'border-red-500/50', text: 'text-red-400' },
+  low: {
+    bg: 'from-emerald-500/20 to-emerald-600/20',
+    border: 'border-emerald-500/50',
+    text: 'text-emerald-400',
+  },
+  medium: {
+    bg: 'from-amber-500/20 to-amber-600/20',
+    border: 'border-amber-500/50',
+    text: 'text-amber-400',
+  },
+  high: {
+    bg: 'from-orange-500/20 to-red-500/20',
+    border: 'border-orange-500/50',
+    text: 'text-orange-400',
+  },
+  critical: {
+    bg: 'from-red-600/20 to-red-900/20',
+    border: 'border-red-500/50',
+    text: 'text-red-400',
+  },
 };
 
 const RISK_LABELS = {
@@ -46,14 +62,16 @@ export function PredictionForm({ className }: PredictionFormProps) {
   };
 
   const handleInputChange = (field: keyof FireRiskPredictionRequest, value: string | number) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (prediction) reset();
   };
 
   const riskStyle = prediction ? RISK_COLORS[prediction.predictions.risk_level] : null;
 
   return (
-    <Card className={`overflow-hidden border-cosmic-600/30 bg-galaxy-800/50 backdrop-blur-xl ${className}`}>
+    <Card
+      className={`overflow-hidden border-cosmic-600/30 bg-galaxy-800/50 backdrop-blur-xl ${className}`}
+    >
       <div className="p-6">
         <div className="mb-6">
           <h3 className="mb-1 flex items-center gap-2 text-lg font-semibold text-white">
@@ -68,7 +86,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-medium text-neutral-400">Latitude</label>
+              <label htmlFor="latitude" className="text-xs font-medium text-neutral-400">
+                Latitude
+              </label>
               <Input
                 type="number"
                 step="0.0001"
@@ -78,7 +98,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-medium text-neutral-400">Longitude</label>
+              <label htmlFor="longitude" className="text-xs font-medium text-neutral-400">
+                Longitude
+              </label>
               <Input
                 type="number"
                 step="0.0001"
@@ -90,7 +112,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-medium text-neutral-400">Município</label>
+            <label htmlFor="municipio" className="text-xs font-medium text-neutral-400">
+              Município
+            </label>
             <Input
               value={formData.municipio}
               onChange={(e) => handleInputChange('municipio', e.target.value)}
@@ -100,7 +124,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="text-xs font-medium text-neutral-400">Dias sem Chuva</label>
+              <label htmlFor="diaSemChuva" className="text-xs font-medium text-neutral-400">
+                Dias sem Chuva
+              </label>
               <Input
                 type="number"
                 value={formData.diaSemChuva}
@@ -109,7 +135,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-medium text-neutral-400">Precipitação (mm)</label>
+              <label htmlFor="precipitacao" className="text-xs font-medium text-neutral-400">
+                Precipitação (mm)
+              </label>
               <Input
                 type="number"
                 step="0.1"
@@ -119,7 +147,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-xs font-medium text-neutral-400">FRP (MW)</label>
+              <label htmlFor="frp" className="text-xs font-medium text-neutral-400">
+                FRP (MW)
+              </label>
               <Input
                 type="number"
                 step="0.1"
@@ -141,9 +171,7 @@ export function PredictionForm({ className }: PredictionFormProps) {
                 Calculando...
               </span>
             ) : (
-              <span className="flex items-center gap-2">
-                🔥 Calcular Risco de Fogo
-              </span>
+              <span className="flex items-center gap-2">🔥 Calcular Risco de Fogo</span>
             )}
           </Button>
         </form>
@@ -157,7 +185,9 @@ export function PredictionForm({ className }: PredictionFormProps) {
               exit={{ opacity: 0, y: -20 }}
               className="mt-6"
             >
-              <div className={`rounded-xl border bg-gradient-to-br p-6 ${riskStyle?.bg} ${riskStyle?.border}`}>
+              <div
+                className={`rounded-xl border bg-gradient-to-br p-6 ${riskStyle?.bg} ${riskStyle?.border}`}
+              >
                 <div className="mb-4 flex items-center justify-between">
                   <h4 className="font-semibold text-white">Resultado da Análise</h4>
                   <Badge className={`${riskStyle?.text} border-current bg-transparent`}>
@@ -199,7 +229,8 @@ export function PredictionForm({ className }: PredictionFormProps) {
                 </div>
 
                 <div className="mt-4 text-center text-xs text-neutral-500">
-                  📍 {prediction.location.municipio} ({prediction.location.latitude.toFixed(4)}, {prediction.location.longitude.toFixed(4)})
+                  📍 {prediction.location.municipio} ({prediction.location.latitude.toFixed(4)},{' '}
+                  {prediction.location.longitude.toFixed(4)})
                 </div>
               </div>
             </motion.div>
@@ -209,4 +240,3 @@ export function PredictionForm({ className }: PredictionFormProps) {
     </Card>
   );
 }
-

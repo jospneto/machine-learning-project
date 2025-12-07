@@ -68,7 +68,7 @@ export function StarryBackground() {
             0,
             star.x,
             star.y,
-            star.size * 3
+            star.size * 3,
           );
           gradient.addColorStop(0, `rgba(167, 139, 250, ${star.opacity * 0.5})`);
           gradient.addColorStop(1, 'rgba(167, 139, 250, 0)');
@@ -96,4 +96,3 @@ export function StarryBackground() {
     />
   );
 }
-
