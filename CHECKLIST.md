@@ -19,6 +19,7 @@ Use este checklist para garantir que tudo está funcionando corretamente.
 - [ ] Python 3.8+ instalado (`python --version`)
 - [ ] pip instalado (`pip --version`)
 - [ ] Dependências Python instaladas:
+
   ```bash
   pip install -r src/scripts/requirements.txt
   ```
