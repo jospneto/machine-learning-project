@@ -96,12 +96,34 @@ class FireRiskPredictor:
         """
         Normaliza outliers usando técnica de capping (IQR)
         """
-        print("🔧 Normalizando outliers...")
+        print("🔧 Normalizando outliers e tratando valores inválidos...")
 
-        numeric_cols = ['DiaSemChuva', 'Precipitacao', 'RiscoFogo', 'FRP']
+        # Colunas que podem ter valor -999 como placeholder para dados ausentes
+        invalid_value_cols = ['DiaSemChuva', 'Precipitacao', 'RiscoFogo', 'FRP']
+
+        # Converter -999 para NaN (são valores ausentes, não zeros)
+        for col in invalid_value_cols:
+            if col in self.df_mossoro.columns:
+                invalid_count = (self.df_mossoro[col] == -999).sum()
+                if invalid_count > 0:
+                    print(f"   - {col}: {invalid_count} valores -999 encontrados")
+                self.df_mossoro.loc[self.df_mossoro[col] == -999, col] = np.nan
+
+        # Remover linhas onde RiscoFogo é inválido (é o target, não podemos imputar)
+        initial_count = len(self.df_mossoro)
+        self.df_mossoro = self.df_mossoro.dropna(subset=['RiscoFogo'])
+        removed_count = initial_count - len(self.df_mossoro)
+        if removed_count > 0:
+            print(f"   - Removidas {removed_count} linhas com RiscoFogo inválido")
+
+        # Normalizar outliers nas features numéricas (não no target RiscoFogo)
+        numeric_cols = ['DiaSemChuva', 'Precipitacao', 'FRP']
 
         for col in numeric_cols:
             if col in self.df_mossoro.columns:
+                # Preencher NaN restantes com 0 para features (não para target)
+                self.df_mossoro[col] = self.df_mossoro[col].fillna(0)
+
                 q1 = self.df_mossoro[col].quantile(0.25)
                 q3 = self.df_mossoro[col].quantile(0.75)
                 iqr = q3 - q1
@@ -112,7 +134,7 @@ class FireRiskPredictor:
                 self.df_mossoro.loc[self.df_mossoro[col] < lower_limit, col] = lower_limit
                 self.df_mossoro.loc[self.df_mossoro[col] > upper_limit, col] = upper_limit
 
-        print("✅ Outliers normalizados")
+        print("✅ Outliers normalizados e valores inválidos tratados")
 
     def prepare_features(self):
         """
@@ -142,6 +164,29 @@ class FireRiskPredictor:
 
         # Target: RiscoFogo
         y = self.df_mossoro['RiscoFogo'].copy()
+
+        # Tratamento de valores NaN
+        print("🔧 Tratando valores ausentes (NaN)...")
+
+        # Verificar quantos NaN existem
+        nan_count_X = X.isna().sum().sum()
+        nan_count_y = y.isna().sum()
+
+        if nan_count_X > 0 or nan_count_y > 0:
+            print(f"   - Encontrados {nan_count_X} valores NaN em features")
+            print(f"   - Encontrados {nan_count_y} valores NaN em target")
+
+            # Preencher NaN em features numéricas com a mediana
+            for col in X.columns:
+                if X[col].isna().any():
+                    median_val = X[col].median()
+                    X[col] = X[col].fillna(median_val)
+
+            # Preencher NaN no target com a mediana
+            if y.isna().any():
+                y = y.fillna(y.median())
+
+            print("   ✅ Valores NaN preenchidos com a mediana")
 
         # Split train/test
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
@@ -344,45 +389,67 @@ class FireRiskPredictor:
 
         return df_comparison
 
-    def predict_next_week(self, location_data=None):
+    def predict_year(self, year=2025, location_data=None):
         """
-        Prediz risco de fogo para a próxima semana
+        Prediz risco de fogo para todos os meses do ano usando estatísticas reais do dataset
 
         Args:
+            year: ano para as predições (default: 2025)
             location_data: dados da localização (lat, lon, etc)
 
         Returns:
-            DataFrame com predições diárias
+            Lista com predições mensais
         """
-        print("\n🔮 Gerando predições para próxima semana...")
+        print(f"\n🔮 Gerando predições mensais para {year}...")
 
-        # Criar dados para próxima semana
-        today = datetime.now()
-        week_dates = [today + timedelta(days=i) for i in range(7)]
+        # Calcular estatísticas por mês do dataset real
+        monthly_stats = self._calculate_monthly_stats()
+
+        # Nomes dos meses em português
+        month_names = {
+            1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+            5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+            9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+        }
 
         predictions_data = []
 
-        for date in week_dates:
-            # Features baseadas na data
+        for month in range(1, 13):
+            # Usar estatísticas reais do mês (ou média geral se não houver dados do mês)
+            if month in monthly_stats:
+                stats = monthly_stats[month]
+            else:
+                # Usar média geral do dataset
+                stats = {
+                    'DiaSemChuva': self.df_mossoro['DiaSemChuva'].median(),
+                    'Precipitacao': self.df_mossoro['Precipitacao'].median(),
+                    'FRP': self.df_mossoro['FRP'].median(),
+                    'Latitude': self.df_mossoro['Latitude'].median(),
+                    'Longitude': self.df_mossoro['Longitude'].median(),
+                    'RiscoFogo_medio': self.df_mossoro['RiscoFogo'].mean(),
+                    'count': 0
+                }
+
+            # Features baseadas no mês e estatísticas reais
             features = {
-                'Mes': date.month,
-                'Dia': date.day,
-                'DiaSemana': date.weekday(),
+                'Mes': month,
+                'Dia': 15,  # Meio do mês
+                'DiaSemana': 3,  # Quarta-feira (valor médio)
                 'Hora': 14,  # Hora do pico (14h)
-                'DiaSemChuva': 0,  # Valor padrão
-                'Precipitacao': 0.0,  # Valor padrão
-                'FRP': 0.0,  # Será estimado
-                'Latitude': -5.1894,  # Mossoró
-                'Longitude': -37.3444,  # Mossoró
+                'DiaSemChuva': stats['DiaSemChuva'],
+                'Precipitacao': stats['Precipitacao'],
+                'FRP': stats['FRP'],
+                'Latitude': stats['Latitude'],
+                'Longitude': stats['Longitude'],
             }
 
-            # Se tiver dados de localização, usar
+            # Se tiver dados de localização específicos, sobrescrever
             if location_data:
                 features.update(location_data)
 
-            # Adicionar encoding categórico (usando valores médios)
-            features['Bioma_encoded'] = 0
-            features['Municipio_encoded'] = 0
+            # Adicionar encoding categórico (usando moda do dataset)
+            features['Bioma_encoded'] = self.df_mossoro['Bioma'].astype('category').cat.codes.mode()[0] if 'Bioma' in self.df_mossoro.columns else 0
+            features['Municipio_encoded'] = self.df_mossoro['Municipio'].astype('category').cat.codes.mode()[0] if 'Municipio' in self.df_mossoro.columns else 0
 
             # Criar array de features na ordem correta
             feature_array = np.array([[
@@ -406,15 +473,192 @@ class FireRiskPredictor:
             predictions = {}
             for model_name, model in self.models.items():
                 pred = model.predict(feature_scaled)[0]
-                predictions[model_name] = max(0, pred)  # Garantir que não seja negativo
+                # Limitar entre 0 e 1 (escala de risco)
+                predictions[model_name] = round(max(0, min(1, pred)), 4)
+
+            # Calcular média das predições para ranking
+            avg_prediction = round(sum(predictions.values()) / len(predictions), 4)
+
+            # Determinar nível de risco
+            if avg_prediction >= 0.8:
+                risk_level = "CRÍTICO"
+            elif avg_prediction >= 0.6:
+                risk_level = "ALTO"
+            elif avg_prediction >= 0.4:
+                risk_level = "MODERADO"
+            elif avg_prediction >= 0.2:
+                risk_level = "BAIXO"
+            else:
+                risk_level = "MÍNIMO"
 
             predictions_data.append({
-                'date': date.strftime('%Y-%m-%d'),
-                'day_name': date.strftime('%A'),
-                'predictions': predictions
+                'month': month,
+                'month_name': month_names[month],
+                'year': year,
+                'date': f'{year}-{month:02d}-15',
+                'features_used': {
+                    'DiaSemChuva': round(features['DiaSemChuva'], 2),
+                    'Precipitacao': round(features['Precipitacao'], 2),
+                    'FRP': round(features['FRP'], 2),
+                },
+                'historical_data': {
+                    'registros_historicos': stats.get('count', 0),
+                    'risco_medio_historico': round(stats.get('RiscoFogo_medio', 0), 4)
+                },
+                'predictions': predictions,
+                'average_prediction': avg_prediction,
+                'risk_level': risk_level
             })
 
-        print("✅ Predições geradas!")
+        print("✅ Predições anuais geradas!")
+        return predictions_data
+
+    def _calculate_monthly_stats(self):
+        """
+        Calcula estatísticas por mês do dataset real
+        """
+        monthly_stats = {}
+
+        for month in range(1, 13):
+            month_data = self.df_mossoro[self.df_mossoro['Mes'] == month]
+
+            if len(month_data) > 0:
+                monthly_stats[month] = {
+                    'DiaSemChuva': month_data['DiaSemChuva'].median(),
+                    'Precipitacao': month_data['Precipitacao'].median(),
+                    'FRP': month_data['FRP'].median(),
+                    'Latitude': month_data['Latitude'].median(),
+                    'Longitude': month_data['Longitude'].median(),
+                    'RiscoFogo_medio': month_data['RiscoFogo'].mean(),
+                    'count': len(month_data)
+                }
+
+        return monthly_stats
+
+    def predict_week(self, location_data=None):
+        """
+        Prediz risco de fogo para os próximos 7 dias usando estatísticas reais do dataset
+
+        Args:
+            location_data: dados da localização (lat, lon, etc)
+
+        Returns:
+            Lista com predições diárias
+        """
+        print("\n🔮 Gerando predições para próxima semana...")
+
+        # Calcular estatísticas por mês do dataset real
+        monthly_stats = self._calculate_monthly_stats()
+
+        # Nomes dos dias em português
+        day_names_pt = {
+            'Monday': 'Segunda-feira',
+            'Tuesday': 'Terça-feira',
+            'Wednesday': 'Quarta-feira',
+            'Thursday': 'Quinta-feira',
+            'Friday': 'Sexta-feira',
+            'Saturday': 'Sábado',
+            'Sunday': 'Domingo'
+        }
+
+        # Criar dados para próxima semana
+        today = datetime.now()
+        week_dates = [today + timedelta(days=i) for i in range(7)]
+
+        predictions_data = []
+
+        for date in week_dates:
+            month = date.month
+
+            # Usar estatísticas reais do mês
+            if month in monthly_stats:
+                stats = monthly_stats[month]
+            else:
+                stats = {
+                    'DiaSemChuva': self.df_mossoro['DiaSemChuva'].median(),
+                    'Precipitacao': self.df_mossoro['Precipitacao'].median(),
+                    'FRP': self.df_mossoro['FRP'].median(),
+                    'Latitude': self.df_mossoro['Latitude'].median(),
+                    'Longitude': self.df_mossoro['Longitude'].median(),
+                    'RiscoFogo_medio': self.df_mossoro['RiscoFogo'].mean(),
+                }
+
+            # Features baseadas na data e estatísticas reais
+            features = {
+                'Mes': date.month,
+                'Dia': date.day,
+                'DiaSemana': date.weekday(),
+                'Hora': 14,
+                'DiaSemChuva': stats['DiaSemChuva'],
+                'Precipitacao': stats['Precipitacao'],
+                'FRP': stats['FRP'],
+                'Latitude': stats['Latitude'],
+                'Longitude': stats['Longitude'],
+            }
+
+            # Se tiver dados de localização específicos, sobrescrever
+            if location_data:
+                features.update(location_data)
+
+            # Adicionar encoding categórico
+            features['Bioma_encoded'] = self.df_mossoro['Bioma'].astype('category').cat.codes.mode()[0] if 'Bioma' in self.df_mossoro.columns else 0
+            features['Municipio_encoded'] = self.df_mossoro['Municipio'].astype('category').cat.codes.mode()[0] if 'Municipio' in self.df_mossoro.columns else 0
+
+            # Criar array de features na ordem correta
+            feature_array = np.array([[
+                features['DiaSemChuva'],
+                features['Precipitacao'],
+                features['FRP'],
+                features['Latitude'],
+                features['Longitude'],
+                features['Mes'],
+                features['Dia'],
+                features['DiaSemana'],
+                features['Hora'],
+                features['Bioma_encoded'],
+                features['Municipio_encoded']
+            ]])
+
+            # Normalizar
+            feature_scaled = self.scaler.transform(feature_array)
+
+            # Predições de cada modelo
+            predictions = {}
+            for model_name, model in self.models.items():
+                pred = model.predict(feature_scaled)[0]
+                predictions[model_name] = round(max(0, min(1, pred)), 4)
+
+            # Calcular média das predições
+            avg_prediction = round(sum(predictions.values()) / len(predictions), 4)
+
+            # Determinar nível de risco
+            if avg_prediction >= 0.8:
+                risk_level = "CRÍTICO"
+            elif avg_prediction >= 0.6:
+                risk_level = "ALTO"
+            elif avg_prediction >= 0.4:
+                risk_level = "MODERADO"
+            elif avg_prediction >= 0.2:
+                risk_level = "BAIXO"
+            else:
+                risk_level = "MÍNIMO"
+
+            day_name_en = date.strftime('%A')
+            predictions_data.append({
+                'date': date.strftime('%Y-%m-%d'),
+                'day_name': day_names_pt.get(day_name_en, day_name_en),
+                'day_of_week': date.weekday(),
+                'features_used': {
+                    'DiaSemChuva': round(features['DiaSemChuva'], 2),
+                    'Precipitacao': round(features['Precipitacao'], 2),
+                    'FRP': round(features['FRP'], 2),
+                },
+                'predictions': predictions,
+                'average_prediction': avg_prediction,
+                'risk_level': risk_level
+            })
+
+        print("✅ Predições semanais geradas!")
         return predictions_data
 
     def save_results(self, output_dir='./output'):
@@ -427,16 +671,22 @@ class FireRiskPredictor:
         print(f"\n💾 Salvando resultados em {output_dir}...")
 
         # Salvar métricas
-        with open(f'{output_dir}/model_metrics.json', 'w') as f:
-            json.dump(self.metrics, f, indent=2)
+        with open(f'{output_dir}/model_metrics.json', 'w', encoding='utf-8') as f:
+            json.dump(self.metrics, f, indent=2, ensure_ascii=False)
 
-        # Salvar predições da próxima semana
-        week_predictions = self.predict_next_week()
-        with open(f'{output_dir}/week_predictions.json', 'w') as f:
-            json.dump(week_predictions, f, indent=2)
+        # Salvar predições anuais (janeiro a dezembro de 2025)
+        year_predictions = self.predict_year(year=2025)
+        with open(f'{output_dir}/year_predictions.json', 'w', encoding='utf-8') as f:
+            json.dump(year_predictions, f, indent=2, ensure_ascii=False)
+
+        # Salvar predições semanais (próximos 7 dias)
+        week_predictions = self.predict_week()
+        with open(f'{output_dir}/week_predictions.json', 'w', encoding='utf-8') as f:
+            json.dump(week_predictions, f, indent=2, ensure_ascii=False)
 
         print("✅ Resultados salvos!")
         print(f"   - model_metrics.json")
+        print(f"   - year_predictions.json")
         print(f"   - week_predictions.json")
 
     def plot_comparison(self):
@@ -502,13 +752,8 @@ def main():
     # Inicializar preditor
     predictor = FireRiskPredictor(data_path='./bdqueimadas.csv')
 
-    # Carregar e preparar dados
-    # predictor.load_and_prepare_data()
-
-    # NOTA: Para demonstração, vamos criar dados sintéticos
-    # Em produção, use dados reais do BDQueimadas
-    print("\n⚠️  Modo de demonstração: Criando dados sintéticos...")
-    predictor._create_demo_data()
+    # Carregar e preparar dados do CSV real
+    predictor.load_and_prepare_data()
 
     # Preparar features
     predictor.prepare_features()
@@ -521,8 +766,8 @@ def main():
     # Comparar modelos
     predictor.compare_models()
 
-    # Gerar predições
-    predictor.predict_next_week()
+    # Gerar predições anuais (janeiro a dezembro de 2025)
+    predictor.predict_year(year=2025)
 
     # Salvar resultados
     predictor.save_results()
