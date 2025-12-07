@@ -8,7 +8,14 @@
 @layer base {
   body {
     @apply bg-neutral-100 text-neutral-700;
-    font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:
+      var(--font-sans),
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
   }
 
   /* Scrollbar styling for dark theme */

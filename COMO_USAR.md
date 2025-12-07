@@ -89,6 +89,7 @@ Abra no navegador: **http://localhost:3000/fire-risk**
 ### 2. Funcionalidades Disponíveis
 
 **Formulário de Predição:**
+
 - 📍 **Coordenadas** - Latitude e longitude
 - 🏙️ **Município** - Nome da cidade
 - ☔ **Dias sem Chuva** - Fator mais importante!
@@ -96,11 +97,13 @@ Abra no navegador: **http://localhost:3000/fire-risk**
 - 🔥 **FRP** - Potência radiativa
 
 **Gráficos:**
+
 - 📈 **Hover** nas linhas → Ver valores exatos
 - 📊 **Legenda** clicável → Mostrar/ocultar modelos
 - 📉 **Estatísticas** na parte inferior
 
 **Níveis de Risco:**
+
 - 🟢 **Verde** = Baixo (0-25%)
 - 🟡 **Amarelo** = Médio (25-50%)
 - 🔴 **Vermelho** = Alto (50-75%)
@@ -134,6 +137,7 @@ python fire_risk_prediction.py
 ```
 
 **Resultado esperado:**
+
 ```
 🔥 Sistema de Predição de Risco de Fogo - Mossoró/RN
 ==================================================
@@ -166,30 +170,30 @@ yarn dev
 
 ### 🧠 Neural Network (MLP)
 
-| Aspecto | Valor |
-|---------|-------|
-| **Arquitetura** | 3 camadas ocultas (100, 50, 25) |
-| **R² Score** | 52.6% |
-| **Características** | Captura padrões não-lineares |
+| Aspecto             | Valor                           |
+| ------------------- | ------------------------------- |
+| **Arquitetura**     | 3 camadas ocultas (100, 50, 25) |
+| **R² Score**        | 52.6%                           |
+| **Características** | Captura padrões não-lineares    |
 
 **Quando usar:** Dados complexos com relações não-lineares
 
 ### 🎯 K-Nearest Neighbors (KNN)
 
-| Aspecto | Valor |
-|---------|-------|
-| **Tipo** | Baseado em similaridade |
-| **R² Score** | 51.2% |
-| **Otimização** | Grid Search |
+| Aspecto        | Valor                   |
+| -------------- | ----------------------- |
+| **Tipo**       | Baseado em similaridade |
+| **R² Score**   | 51.2%                   |
+| **Otimização** | Grid Search             |
 
 **Atenção:** Apresenta overfitting (R²=100% treino) - memoriza dados
 
 ### 🌲 Random Forest ⭐ MELHOR MODELO
 
-| Aspecto | Valor |
-|---------|-------|
-| **Árvores** | 100 árvores de decisão |
-| **R² Score** | **71.0%** |
+| Aspecto         | Valor                  |
+| --------------- | ---------------------- |
+| **Árvores**     | 100 árvores de decisão |
+| **R² Score**    | **71.0%**              |
 | **Feature Top** | Dias sem Chuva (57.5%) |
 
 **Recomendado:** Melhor equilíbrio entre precisão e interpretabilidade
@@ -198,14 +202,14 @@ yarn dev
 
 ## 📈 Feature Importance
 
-| Feature | Importância | Descrição |
-|---------|-------------|-----------|
-| ☔ Dias sem Chuva | **57.5%** | Fator mais crítico |
-| 🌧️ Precipitação | 23.4% | Reduz risco |
-| 🔥 FRP | 8.9% | Potência radiativa |
-| 📍 Latitude | 2.5% | Localização |
-| 📍 Longitude | 2.4% | Localização |
-| Outros | 5.3% | Dia, mês, hora, etc. |
+| Feature           | Importância | Descrição            |
+| ----------------- | ----------- | -------------------- |
+| ☔ Dias sem Chuva | **57.5%**   | Fator mais crítico   |
+| 🌧️ Precipitação   | 23.4%       | Reduz risco          |
+| 🔥 FRP            | 8.9%        | Potência radiativa   |
+| 📍 Latitude       | 2.5%        | Localização          |
+| 📍 Longitude      | 2.4%        | Localização          |
+| Outros            | 5.3%        | Dia, mês, hora, etc. |
 
 **Conclusão:** As **condições climáticas** (dias sem chuva e precipitação) são os principais indicadores de risco de fogo.
 
@@ -215,12 +219,12 @@ yarn dev
 
 ### R² (Coeficiente de Determinação)
 
-| Valor | Qualidade |
-|-------|-----------|
-| > 90% | Excelente |
-| 70-90% | Muito bom |
-| 50-70% | Bom |
-| < 50% | Precisa melhorar |
+| Valor  | Qualidade        |
+| ------ | ---------------- |
+| > 90%  | Excelente        |
+| 70-90% | Muito bom        |
+| 50-70% | Bom              |
+| < 50%  | Precisa melhorar |
 
 ### RMSE (Root Mean Squared Error)
 
@@ -245,6 +249,7 @@ yarn dev
 ```
 
 ✅ **Solução:** Adicione no `.env.local`:
+
 ```env
 AUTH_TRUST_HOST=true
 ```
@@ -260,6 +265,7 @@ Port 3000 is in use, using 3001 instead
 ### Gráficos vazios
 
 ✅ **Verifique** se os arquivos existem em `output/`:
+
 - `model_metrics.json`
 - `week_predictions.json`
 
@@ -294,11 +300,11 @@ python fire_risk_prediction.py  # Treina modelos
 
 ## 🔌 APIs Disponíveis
 
-| Endpoint | Método | Descrição |
-|----------|--------|-----------|
-| `/api/fire-risk/metrics` | GET | Métricas dos modelos |
-| `/api/fire-risk/predictions/week` | GET | Predições 7 dias |
-| `/api/fire-risk/predict` | POST | Predição por localização |
+| Endpoint                          | Método | Descrição                |
+| --------------------------------- | ------ | ------------------------ |
+| `/api/fire-risk/metrics`          | GET    | Métricas dos modelos     |
+| `/api/fire-risk/predictions/week` | GET    | Predições 7 dias         |
+| `/api/fire-risk/predict`          | POST   | Predição por localização |
 
 ### Exemplo de Predição (POST)
 
@@ -331,11 +337,13 @@ POST /api/fire-risk/predict
 ## 🎯 Checklist de Apresentação
 
 ### Preparação
+
 - [ ] `.env.local` configurado
 - [ ] `yarn dev` funcionando
 - [ ] Dashboard acessível
 
 ### Demonstração
+
 - [ ] Mostrar cards de métricas
 - [ ] Explicar R², RMSE, MAE
 - [ ] Usar formulário de predição
@@ -344,6 +352,7 @@ POST /api/fire-risk/predict
 - [ ] Apresentar conclusão (Random Forest melhor)
 
 ### Perguntas Esperadas
+
 - **"Qual o melhor modelo?"** → Random Forest (R²=71%)
 - **"O que mais influencia o risco?"** → Dias sem Chuva (57.5%)
 - **"Como funciona a predição?"** → Demonstrar no formulário
@@ -353,6 +362,7 @@ POST /api/fire-risk/predict
 ## 🎉 Pronto!
 
 **URLs importantes:**
+
 - 🌐 Dashboard: `http://localhost:3000/fire-risk`
 - 📊 API Métricas: `http://localhost:3000/api/fire-risk/metrics`
 - 📈 API Predições: `http://localhost:3000/api/fire-risk/predictions/week`
@@ -361,4 +371,4 @@ POST /api/fire-risk/predict
 
 **💪 Boa sorte com seu projeto de Machine Learning!**
 
-*Desenvolvido com ❤️ para predição de risco de incêndios florestais*
+_Desenvolvido com ❤️ para predição de risco de incêndios florestais_

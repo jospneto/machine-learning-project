@@ -62,11 +62,11 @@ Abra o navegador em: **http://localhost:3000/fire-risk**
 
 ### Modelos de Machine Learning
 
-| Modelo | R² Score | Descrição |
-|--------|----------|-----------|
-| 🧠 Neural Network | 52.6% | MLP com 3 camadas ocultas |
-| 🎯 KNN | 51.2% | K-Nearest Neighbors otimizado |
-| 🌲 Random Forest | **71.0%** | Ensemble com 100 árvores |
+| Modelo            | R² Score  | Descrição                     |
+| ----------------- | --------- | ----------------------------- |
+| 🧠 Neural Network | 52.6%     | MLP com 3 camadas ocultas     |
+| 🎯 KNN            | 51.2%     | K-Nearest Neighbors otimizado |
+| 🌲 Random Forest  | **71.0%** | Ensemble com 100 árvores      |
 
 ---
 
@@ -96,6 +96,7 @@ python fire_risk_prediction.py
 ```
 
 Os resultados serão salvos em `output/`:
+
 - `model_metrics.json` - Métricas dos modelos
 - `week_predictions.json` - Predições semanais
 - `model_comparison.png` - Gráfico de comparação
@@ -146,12 +147,15 @@ Os resultados serão salvos em `output/`:
 ## 🎨 APIs Disponíveis
 
 ### GET `/api/fire-risk/metrics`
+
 Retorna métricas de performance dos 3 modelos ML.
 
 ### GET `/api/fire-risk/predictions/week`
+
 Retorna predições de risco para os próximos 7 dias.
 
 ### POST `/api/fire-risk/predict`
+
 Calcula risco para localização específica.
 
 ```json
@@ -192,23 +196,30 @@ python fire_risk_prediction.py  # Treina modelos
 ## ❓ Solução de Problemas
 
 ### Erro: "UntrustedHost" no terminal
+
 ```
 [auth][error] UntrustedHost: Host must be trusted
 ```
+
 ✅ **Solução**: Adicione `AUTH_TRUST_HOST=true` no `.env.local`
 
 ### Erro: Porta 3000 em uso
+
 ```
 Port 3000 is in use, using 3001 instead
 ```
+
 ✅ **Solução**: Normal! Acesse a porta alternativa mostrada no terminal.
 
 ### Gráficos não carregam
+
 ✅ **Solução**:
+
 1. Verifique se os arquivos existem em `output/`
 2. Reinicie o servidor: `Ctrl+C` → `yarn dev`
 
 ### Cores personalizadas não aparecem
+
 ✅ **Solução**: O Tailwind v4 usa `@theme` - reinicie o servidor após alterações em CSS.
 
 ---
@@ -216,6 +227,7 @@ Port 3000 is in use, using 3001 instead
 ## 📱 Funcionalidades
 
 ### ✅ Implementado
+
 - [x] Dashboard com tema galáxia/fogo
 - [x] Animação de estrelas no background
 - [x] Cards de métricas animados
@@ -227,6 +239,7 @@ Port 3000 is in use, using 3001 instead
 - [x] Insights e conclusões
 
 ### 🔮 Futuras Melhorias
+
 - [ ] Mapa interativo com pontos de risco
 - [ ] Histórico de predições
 - [ ] Alertas por email/SMS

@@ -6,22 +6,22 @@ Sistema avançado de monitoramento e predição de risco de incêndio para a cid
 
 Este projeto implementa três modelos de Machine Learning para prever o risco de fogo:
 
-| Modelo | R² Score | Descrição |
-|--------|----------|-----------|
-| 🧠 **Rede Neural (MLP)** | 52.6% | Multi-Layer Perceptron com 3 camadas ocultas (100, 50, 25 neurônios) |
-| 🎯 **K-Nearest Neighbors** | 51.2% | Algoritmo otimizado via Grid Search |
-| 🌲 **Random Forest** | **71.0%** | Ensemble com 100 árvores de decisão - **Melhor modelo** |
+| Modelo                     | R² Score  | Descrição                                                            |
+| -------------------------- | --------- | -------------------------------------------------------------------- |
+| 🧠 **Rede Neural (MLP)**   | 52.6%     | Multi-Layer Perceptron com 3 camadas ocultas (100, 50, 25 neurônios) |
+| 🎯 **K-Nearest Neighbors** | 51.2%     | Algoritmo otimizado via Grid Search                                  |
+| 🌲 **Random Forest**       | **71.0%** | Ensemble com 100 árvores de decisão - **Melhor modelo**              |
 
 ### 📊 Feature Importance (Random Forest)
 
-| Feature | Importância |
-|---------|-------------|
-| ☔ Dias sem Chuva | **57.5%** |
-| 🌧️ Precipitação | 23.4% |
-| 🔥 FRP (Potência Radiativa) | 8.9% |
-| 📍 Latitude | 2.5% |
-| 📍 Longitude | 2.4% |
-| Outros | 5.3% |
+| Feature                     | Importância |
+| --------------------------- | ----------- |
+| ☔ Dias sem Chuva           | **57.5%**   |
+| 🌧️ Precipitação             | 23.4%       |
+| 🔥 FRP (Potência Radiativa) | 8.9%        |
+| 📍 Latitude                 | 2.5%        |
+| 📍 Longitude                | 2.4%        |
+| Outros                      | 5.3%        |
 
 ---
 
@@ -69,6 +69,7 @@ Abra: **http://localhost:3000/fire-risk**
 ## 🎨 Interface do Dashboard
 
 ### Visual Design
+
 - 🌌 **Tema Galáxia/Fogo** - Paleta de cores escura com degradês roxo/laranja/vermelho
 - ✨ **Background animado** - Estrelas cintilantes renderizadas com Canvas
 - 🌈 **Gradientes dinâmicos** - Cards e botões com efeitos de glow
@@ -146,6 +147,7 @@ machine-learning-project/
 Retorna métricas de performance dos 3 modelos ML.
 
 **Response:**
+
 ```json
 {
   "neural_network": {
@@ -170,6 +172,7 @@ Retorna métricas de performance dos 3 modelos ML.
 Retorna predições de risco para os próximos 7 dias.
 
 **Response:**
+
 ```json
 [
   {
@@ -190,6 +193,7 @@ Retorna predições de risco para os próximos 7 dias.
 Calcula risco para uma localização específica.
 
 **Request Body:**
+
 ```json
 {
   "latitude": -5.1894,
@@ -202,6 +206,7 @@ Calcula risco para uma localização específica.
 ```
 
 **Response:**
+
 ```json
 {
   "location": {
@@ -248,6 +253,7 @@ python fire_risk_prediction.py
 ```
 
 O script irá:
+
 - ✅ Carregar e processar os dados
 - ✅ Treinar os 3 modelos de ML
 - ✅ Avaliar performance (R², RMSE, MAE)
@@ -260,69 +266,77 @@ O script irá:
 ## 🛠️ Tecnologias Utilizadas
 
 ### Frontend
-| Tecnologia | Versão | Uso |
-|------------|--------|-----|
-| Next.js | 15.x | Framework React |
-| TypeScript | 5.x | Tipagem estática |
-| Tailwind CSS | 4.x | Estilização |
-| Framer Motion | 11.x | Animações |
-| Recharts | 2.x | Gráficos |
-| React Query | 5.x | Cache e estado |
+
+| Tecnologia    | Versão | Uso              |
+| ------------- | ------ | ---------------- |
+| Next.js       | 15.x   | Framework React  |
+| TypeScript    | 5.x    | Tipagem estática |
+| Tailwind CSS  | 4.x    | Estilização      |
+| Framer Motion | 11.x   | Animações        |
+| Recharts      | 2.x    | Gráficos         |
+| React Query   | 5.x    | Cache e estado   |
 
 ### Backend (API Routes)
-| Tecnologia | Uso |
-|------------|-----|
+
+| Tecnologia         | Uso            |
+| ------------------ | -------------- |
 | Next.js API Routes | Endpoints REST |
-| Auth.js | Autenticação |
+| Auth.js            | Autenticação   |
 
 ### Machine Learning
-| Tecnologia | Uso |
-|------------|-----|
-| Python 3.8+ | Linguagem |
-| Scikit-learn | Modelos ML |
-| Pandas | Processamento |
-| NumPy | Cálculos |
-| Matplotlib | Visualização |
+
+| Tecnologia   | Uso           |
+| ------------ | ------------- |
+| Python 3.8+  | Linguagem     |
+| Scikit-learn | Modelos ML    |
+| Pandas       | Processamento |
+| NumPy        | Cálculos      |
+| Matplotlib   | Visualização  |
 
 ---
 
 ## 📊 Níveis de Risco
 
-| Nível | Range | Cor | Descrição |
-|-------|-------|-----|-----------|
-| 🟢 Baixo | 0-25% | `#10b981` | Condições favoráveis |
-| 🟡 Médio | 25-50% | `#f59e0b` | Atenção necessária |
-| 🔴 Alto | 50-75% | `#ef4444` | Risco elevado |
-| ⚫ Crítico | 75-100% | `#7f1d1d` | Risco extremo |
+| Nível      | Range   | Cor       | Descrição            |
+| ---------- | ------- | --------- | -------------------- |
+| 🟢 Baixo   | 0-25%   | `#10b981` | Condições favoráveis |
+| 🟡 Médio   | 25-50%  | `#f59e0b` | Atenção necessária   |
+| 🔴 Alto    | 50-75%  | `#ef4444` | Risco elevado        |
+| ⚫ Crítico | 75-100% | `#7f1d1d` | Risco extremo        |
 
 ---
 
 ## ❓ Solução de Problemas
 
 ### Erro: "UntrustedHost"
+
 ```
 [auth][error] UntrustedHost: Host must be trusted
 ```
+
 ✅ Adicione `AUTH_TRUST_HOST=true` no `.env.local`
 
 ### Gráficos vazios
+
 ✅ Verifique se os arquivos existem em `output/`
 
 ### Erro de tipos TypeScript
+
 ✅ Execute `yarn type-check` para verificar
 
 ### Porta em uso
+
 ✅ O Next.js automaticamente usa a próxima porta disponível
 
 ---
 
 ## 📈 Métricas de Avaliação
 
-| Métrica | Descrição | Ideal |
-|---------|-----------|-------|
-| **R²** | Coeficiente de determinação | Maior é melhor (0-1) |
-| **RMSE** | Erro quadrático médio | Menor é melhor |
-| **MAE** | Erro absoluto médio | Menor é melhor |
+| Métrica  | Descrição                   | Ideal                |
+| -------- | --------------------------- | -------------------- |
+| **R²**   | Coeficiente de determinação | Maior é melhor (0-1) |
+| **RMSE** | Erro quadrático médio       | Menor é melhor       |
+| **MAE**  | Erro absoluto médio         | Menor é melhor       |
 
 ---
 
@@ -344,13 +358,13 @@ O script irá:
 
 ## 📝 Requisitos do Sistema
 
-| Requisito | Mínimo | Recomendado |
-|-----------|--------|-------------|
-| RAM | 4GB | 8GB |
-| Disco | 2GB | 5GB |
-| CPU | Dual-core 2.0GHz | Quad-core 2.5GHz |
-| Node.js | 18.x | 20.x |
-| Python | 3.8 | 3.11 |
+| Requisito | Mínimo           | Recomendado      |
+| --------- | ---------------- | ---------------- |
+| RAM       | 4GB              | 8GB              |
+| Disco     | 2GB              | 5GB              |
+| CPU       | Dual-core 2.0GHz | Quad-core 2.5GHz |
+| Node.js   | 18.x             | 20.x             |
+| Python    | 3.8              | 3.11             |
 
 ---
 
@@ -363,6 +377,7 @@ Projeto desenvolvido para fins educacionais (Mestrado em Aprendizado de Máquina
 ## 📊 Fonte de Dados
 
 **BDQueimadas - INPE**
+
 - URL: https://terrabrasilis.dpi.inpe.br/queimadas/bdqueimadas/
 - Satélites: AQUA, TERRA, NOAA-20, NPP-375
 - Região: Mossoró/RN, Brasil

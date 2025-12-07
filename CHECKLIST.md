@@ -5,6 +5,7 @@ Use este checklist para garantir que tudo está funcionando corretamente.
 ## 📦 Instalação
 
 ### Node.js
+
 - [ ] Node.js 18+ instalado (`node --version`)
 - [ ] Yarn instalado (`yarn --version`)
 - [ ] Dependências instaladas (`yarn install`)
@@ -14,12 +15,14 @@ Use este checklist para garantir que tudo está funcionando corretamente.
   - [ ] `react-is` (19.0.0+)
 
 ### Python
+
 - [ ] Python 3.8+ instalado (`python --version`)
 - [ ] pip instalado (`pip --version`)
 - [ ] Dependências Python instaladas:
   ```bash
   pip install -r src/scripts/requirements.txt
   ```
+
   - [ ] `pandas`
   - [ ] `numpy`
   - [ ] `scikit-learn`
@@ -29,6 +32,7 @@ Use este checklist para garantir que tudo está funcionando corretamente.
 ## ⚙️ Configuração
 
 ### Variáveis de Ambiente
+
 - [ ] Arquivo `.env.local` criado na raiz do projeto
 - [ ] `NEXT_PUBLIC_MAPBOX_TOKEN` configurado
   - 💡 Obtenha em: https://www.mapbox.com/
@@ -37,6 +41,7 @@ Use este checklist para garantir que tudo está funcionando corretamente.
 ## 🧪 Testes Rápidos
 
 ### 1. Verificar API
+
 ```bash
 # Iniciar servidor
 yarn dev
@@ -96,6 +101,7 @@ Acesse: http://localhost:3000/fire-risk
 ## 🎨 Interface
 
 ### Visual
+
 - [ ] Cores corretas dos níveis de risco:
   - 🟢 Verde para Baixo (0-25%)
   - 🟡 Amarelo para Médio (25-50%)
@@ -107,6 +113,7 @@ Acesse: http://localhost:3000/fire-risk
 - [ ] Responsivo em mobile
 
 ### Interatividade
+
 - [ ] Click em marcadores funciona
 - [ ] Hover no gráfico mostra valores
 - [ ] Navegação no mapa funciona
@@ -123,6 +130,7 @@ Acesse: http://localhost:3000/fire-risk
    - [ ] Salvar como `src/scripts/bdqueimadas.csv`
 
 2. Executar script:
+
 ```bash
 cd src/scripts
 python fire_risk_prediction.py
@@ -150,27 +158,35 @@ python fire_risk_prediction.py
 ## 🔍 Troubleshooting
 
 ### Problema: Mapa não carrega
+
 **Soluções:**
+
 - [ ] Verificar se `NEXT_PUBLIC_MAPBOX_TOKEN` está correto
 - [ ] Verificar console do navegador para erros
 - [ ] Limpar cache: `yarn dev --turbo`
 - [ ] Verificar se token é público (começa com `pk.`)
 
 ### Problema: Gráfico não aparece
+
 **Soluções:**
+
 - [ ] Verificar se `recharts` está instalado
 - [ ] Verificar se `react-is` está instalado
 - [ ] Verificar console para erros
 - [ ] Reiniciar servidor dev
 
 ### Problema: API retorna erro 500
+
 **Soluções:**
+
 - [ ] Verificar se arquivos em `output/` existem
 - [ ] Verificar logs do servidor
 - [ ] Testar endpoints individualmente
 
 ### Problema: Python script falha
+
 **Soluções:**
+
 - [ ] Verificar versão do Python (3.8+)
 - [ ] Instalar dependências: `pip install -r requirements.txt`
 - [ ] Verificar se arquivo CSV existe (para dados reais)
@@ -179,6 +195,7 @@ python fire_risk_prediction.py
 ## 📊 Performance
 
 ### Tempos Esperados
+
 - [ ] Dashboard carrega em < 3 segundos
 - [ ] Mapa renderiza em < 2 segundos
 - [ ] Gráfico renderiza em < 1 segundo
@@ -265,11 +282,11 @@ Quando tudo estiver ✅:
 **🎯 Objetivo:** Ter 100% dos itens marcados!
 
 **❓ Dúvidas?** Consulte:
+
 - `README_FIRE_RISK.md` para detalhes técnicos
 - `QUICK_START.md` para início rápido
 - GitHub Issues para problemas
 
 ---
 
-*Última atualização: 02/12/2024*
-
+_Última atualização: 02/12/2024_

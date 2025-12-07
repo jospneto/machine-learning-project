@@ -7,6 +7,7 @@ Sistema completo de monitoramento e predição de risco de incêndio para Mossor
 ### ✅ Implementações Realizadas
 
 #### 1. Machine Learning (Python) ✅
+
 - **3 Modelos implementados:**
   - 🧠 **Rede Neural (MLP)**: 3 camadas ocultas (100, 50, 25 neurônios)
   - 🎯 **K-Nearest Neighbors (KNN)**: Otimizado com Grid Search
@@ -21,6 +22,7 @@ Sistema completo de monitoramento e predição de risco de incêndio para Mossor
   - Exportação de resultados em JSON
 
 #### 2. API REST (Next.js) ✅
+
 - **Endpoints implementados:**
   - `GET /api/fire-risk/metrics` - Métricas dos modelos
   - `GET /api/fire-risk/predictions/week` - Predições semanais
@@ -33,6 +35,7 @@ Sistema completo de monitoramento e predição de risco de incêndio para Mossor
   - Dados de exemplo incluídos
 
 #### 3. Interface Web (Next.js + React) ✅
+
 - **Dashboard completo com:**
   - 🗺️ **Mapa interativo** (Mapbox GL JS)
     - Marcadores coloridos por nível de risco
@@ -172,25 +175,27 @@ O sistema oferece:
 ## 🛠️ Tecnologias Utilizadas
 
 ### Backend & ML
-| Tecnologia | Versão | Uso |
-|------------|--------|-----|
-| Python | 3.8+ | Scripts ML |
-| Scikit-learn | 1.3+ | Modelos ML |
-| Pandas | 2.0+ | Processamento de dados |
-| NumPy | 1.24+ | Computação numérica |
-| Matplotlib | 3.7+ | Visualização |
+
+| Tecnologia   | Versão | Uso                    |
+| ------------ | ------ | ---------------------- |
+| Python       | 3.8+   | Scripts ML             |
+| Scikit-learn | 1.3+   | Modelos ML             |
+| Pandas       | 2.0+   | Processamento de dados |
+| NumPy        | 1.24+  | Computação numérica    |
+| Matplotlib   | 3.7+   | Visualização           |
 
 ### Frontend
-| Tecnologia | Versão | Uso |
-|------------|--------|-----|
-| Next.js | 15.0 | Framework React |
-| TypeScript | 5.x | Type-safety |
-| Mapbox GL JS | 3.16 | Mapas interativos |
-| Recharts | 3.5 | Gráficos |
-| Shadcn/UI | - | Componentes UI |
-| TailwindCSS | 4.1 | Estilização |
-| React Query | 5.45 | Estado assíncrono |
-| Framer Motion | 12.4 | Animações |
+
+| Tecnologia    | Versão | Uso               |
+| ------------- | ------ | ----------------- |
+| Next.js       | 15.0   | Framework React   |
+| TypeScript    | 5.x    | Type-safety       |
+| Mapbox GL JS  | 3.16   | Mapas interativos |
+| Recharts      | 3.5    | Gráficos          |
+| Shadcn/UI     | -      | Componentes UI    |
+| TailwindCSS   | 4.1    | Estilização       |
+| React Query   | 5.45   | Estado assíncrono |
+| Framer Motion | 12.4   | Animações         |
 
 ---
 
@@ -200,11 +205,11 @@ O sistema oferece:
 
 Com dados reais do BDQueimadas, espera-se:
 
-| Modelo | RMSE | MAE | R² |
-|--------|------|-----|-----|
+| Modelo         | RMSE    | MAE     | R²        |
+| -------------- | ------- | ------- | --------- |
 | Neural Network | 6.5-7.5 | 5.0-5.5 | 0.80-0.85 |
-| KNN | 7.0-8.0 | 5.5-6.0 | 0.78-0.82 |
-| Random Forest | 6.0-7.0 | 4.8-5.3 | 0.82-0.86 |
+| KNN            | 7.0-8.0 | 5.5-6.0 | 0.78-0.82 |
+| Random Forest  | 6.0-7.0 | 4.8-5.3 | 0.82-0.86 |
 
 ### Interpretação
 
@@ -264,12 +269,14 @@ Com dados reais do BDQueimadas, espera-se:
 **URL:** https://terrabrasilis.dpi.inpe.br/queimadas/bdqueimadas/
 
 **Descrição:**
+
 - Banco de dados de queimadas e incêndios
 - Dados de satélites (AQUA, TERRA, NOAA, NPP)
 - Atualização em tempo real
 - Cobertura: Todo território brasileiro
 
 **Variáveis Utilizadas:**
+
 - `DiaSemChuva`: Dias consecutivos sem precipitação
 - `Precipitacao`: Precipitação em mm
 - `RiscoFogo`: Índice de risco calculado (0-100%)
@@ -282,30 +289,35 @@ Com dados reais do BDQueimadas, espera-se:
 ## 🔬 Metodologia Científica
 
 ### 1. Análise Exploratória
+
 - Visualização de distribuições
 - Análise de correlações
 - Identificação de outliers
 - Análise temporal
 
 ### 2. Pré-processamento
+
 - Tratamento de missing values
 - Normalização de outliers (IQR capping)
 - Encoding de variáveis categóricas
 - Normalização (StandardScaler)
 
 ### 3. Treinamento
+
 - Separação treino/teste
 - Treinamento de múltiplos modelos
 - Otimização de hiperparâmetros
 - Validação cruzada
 
 ### 4. Avaliação
+
 - Métricas quantitativas (RMSE, MAE, R²)
 - Análise de resíduos
 - Comparação de modelos
 - Validação visual
 
 ### 5. Deployment
+
 - API REST para servir predições
 - Interface web interativa
 - Documentação completa
@@ -358,18 +370,21 @@ Com dados reais do BDQueimadas, espera-se:
 ## 🎯 Próximas Melhorias
 
 ### Curto Prazo
+
 - [ ] Integração com API do INPE em tempo real
 - [ ] Adicionar mais variáveis (umidade, vento)
 - [ ] Sistema de alertas por email
 - [ ] Exportação de relatórios PDF
 
 ### Médio Prazo
+
 - [ ] Previsão meteorológica integrada
 - [ ] Análise histórica interativa
 - [ ] API pública documentada (Swagger)
 - [ ] Testes automatizados (Jest, Cypress)
 
 ### Longo Prazo
+
 - [ ] Deploy em produção (Vercel/AWS)
 - [ ] App mobile (React Native)
 - [ ] Monitoramento com Prometheus
@@ -382,6 +397,7 @@ Com dados reais do BDQueimadas, espera-se:
 Este é um projeto acadêmico de Mestrado em Aprendizado de Máquina. Contribuições são bem-vindas!
 
 **Como contribuir:**
+
 1. Fork o projeto
 2. Crie uma branch (`git checkout -b feature/nova-feature`)
 3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
@@ -407,6 +423,7 @@ Este é um projeto acadêmico de Mestrado em Aprendizado de Máquina. Contribui�
 **Região:** Mossoró/RN e arredores
 
 **Objetivos de Aprendizado:**
+
 - ✅ Aplicar técnicas de ML para problemas reais
 - ✅ Trabalhar com dados geoespaciais
 - ✅ Comparar diferentes algoritmos
@@ -429,6 +446,7 @@ Este sistema foi desenvolvido para fins **educacionais e de pesquisa**. Para dec
 ## 📧 Contato
 
 Para dúvidas, sugestões ou colaborações:
+
 - 🐛 **Issues**: GitHub Issues
 - 💬 **Discussões**: GitHub Discussions
 - 📬 **Email**: [seu-email@exemplo.com]
@@ -460,5 +478,4 @@ Projeto desenvolvido para fins acadêmicos. Dados do BDQueimadas (INPE) são de 
 
 ---
 
-*Última atualização: 02/12/2024*
-
+_Última atualização: 02/12/2024_
