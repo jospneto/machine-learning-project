@@ -3,23 +3,35 @@ import { enableProtectedRoute } from '@/lib/flags';
 
 import { NextAuthAuthorizedCallback } from '../types';
 
+// Rotas públicas que não precisam de autenticação
+const PUBLIC_ROUTES = ['/', '/fire-risk', '/login', '/api'];
+
 export const authorized: NextAuthAuthorizedCallback = ({ auth, request: { nextUrl } }) => {
   const isLoggedIn = !!auth?.user;
-  const isOnPosts = nextUrl.pathname.startsWith(PAGES.POSTS());
+  const pathname = nextUrl.pathname;
+
+  // Permitir todas as rotas públicas
+  const isPublicRoute = PUBLIC_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+
+  if (isPublicRoute) {
+    return true;
+  }
 
   // Feature flag protection for feature-protected routes
-  if (nextUrl.pathname.startsWith(PAGES.FEATURE_PROTECTED())) {
+  if (pathname.startsWith(PAGES.FEATURE_PROTECTED())) {
     if (!enableProtectedRoute) {
       return Response.redirect(new URL(PAGES.HOME(), nextUrl));
     }
-    // If feature is enabled, still check if user is logged in for this protected route
     return isLoggedIn;
   }
 
-  if (isOnPosts) {
+  // Rotas protegidas requerem login
+  if (pathname.startsWith(PAGES.POSTS())) {
     return isLoggedIn;
-  } else if (isLoggedIn) {
-    return Response.redirect(new URL(PAGES.POSTS(), nextUrl));
   }
+
+  // Por padrão, permitir acesso
   return true;
 };

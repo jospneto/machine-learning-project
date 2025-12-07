@@ -56,7 +56,6 @@ export const enableDarkMode = createFlag({
 export const enableAnalytics = createFlag({
   key: 'analytics',
   decide: () =>
-    // You can implement A/B testing logic here
-    // Example: 50% of users get the feature
-    Math.random() > 0.5,
+    // Analytics habilitado em produção
+    DEPLOY_ENVIRONMENT === ENVIRONMENTS.PRODUCTION,
 });
